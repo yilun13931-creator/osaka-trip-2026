@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>大阪冬日慢旅｜2026.12.13–12.18</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@600;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --night:#141a33; --night2:#1f2547; --gold:#e8b45a; --gold-soft:#f4d9a6;
+  --paper:#f7f2e8; --card:#fffdf8; --ink:#2a2733; --muted:#6f6a77; --line:#e7dfd0;
+  --red:#c8553d; --matcha:#5f8a5a; --sea:#3f7f9c;
+  --radius:18px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth; scroll-padding-top:72px}
+body{margin:0; background:var(--paper); color:var(--ink);
+  font-family:"Noto Sans TC",system-ui,sans-serif; line-height:1.65; font-size:16px;
+  background-image:radial-gradient(circle at 20% 10%, rgba(232,180,90,.06), transparent 40%),
+                   radial-gradient(circle at 80% 60%, rgba(200,85,61,.05), transparent 45%);}
+a{color:inherit}
+.serif{font-family:"Noto Serif TC",serif}
+.wrap{max-width:780px; margin:0 auto; padding:0 18px}
+
+/* ---------- HERO ---------- */
+.hero{position:relative; overflow:hidden; color:#fff; padding:72px 0 86px; min-height:440px;
+  background:
+    linear-gradient(180deg, rgba(247,242,232,0) 78%, rgba(247,242,232,1) 100%),
+    linear-gradient(90deg, #121833 0%, #121833 30%, rgba(18,24,51,.62) 46%, rgba(18,24,51,.12) 70%, rgba(18,24,51,0) 100%),
+    url("img/hero.jpg") right 35% / auto 128% no-repeat, #121833}
+.hero h1, .hero .sub, .hero .eyebrow{text-shadow:0 2px 14px rgba(0,0,0,.45)}
+@media (max-width:600px){.hero{background:
+    linear-gradient(180deg, rgba(13,18,40,.78) 0%, rgba(13,18,40,.55) 55%, rgba(13,18,40,.2) 82%, rgba(247,242,232,1) 100%),
+    url("img/hero.jpg") 62% 30% / cover no-repeat, #1f2547}}
+.bokeh{position:absolute; border-radius:50%; filter:blur(2px); opacity:.55; animation:float 9s ease-in-out infinite}
+@keyframes float{50%{transform:translateY(-10px)}}
+@media (prefers-reduced-motion:reduce){.bokeh{animation:none}}
+.hero .eyebrow{letter-spacing:.32em; font-size:13px; color:var(--gold-soft); margin:0 0 14px}
+.hero h1{font-family:"Noto Serif TC",serif; font-weight:900; font-size:clamp(40px,11vw,68px); line-height:1.1; margin:0}
+.hero h1 span{color:var(--gold)}
+.hero .sub{margin:16px 0 26px; color:#d9d6e6; font-size:16px}
+.pills{display:flex; flex-wrap:wrap; gap:8px}
+.pill{background:rgba(13,18,40,.45); backdrop-filter:blur(6px); border:1px solid rgba(255,255,255,.25); border-radius:999px; padding:6px 13px; font-size:14px}
+.skyline{position:absolute; left:0; right:0; bottom:-2px; width:100%; height:70px}
+
+/* ---------- NAV ---------- */
+.nav{position:sticky; top:0; z-index:20; background:rgba(247,242,232,.92); backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line)}
+.nav .wrap{display:flex; gap:6px; overflow-x:auto; padding:10px 18px; scrollbar-width:none}
+.nav .wrap::-webkit-scrollbar{display:none}
+.chip{flex:0 0 auto; text-decoration:none; border:1px solid var(--line); background:var(--card); border-radius:12px;
+  padding:6px 12px; font-size:13px; line-height:1.25; text-align:center; color:var(--muted)}
+.chip b{display:block; color:var(--ink); font-size:14px}
+.chip.on{background:var(--night); border-color:var(--night); color:#cfd0e0}
+.chip.on b{color:var(--gold)}
+
+/* ---------- SECTIONS ---------- */
+section{padding:38px 0 8px}
+.h2{font-family:"Noto Serif TC",serif; font-size:26px; margin:0 0 6px}
+.lead{color:var(--muted); margin:0 0 20px}
+
+.must{display:grid; gap:10px}
+.must div{background:var(--card); border:1px solid var(--line); border-left:5px solid var(--gold); border-radius:14px; padding:12px 14px}
+.must b{display:block}
+
+.ov{display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:12px}
+.ovc{display:block; text-decoration:none; background:var(--card); border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; transition:transform .15s}
+.ovc:hover{transform:translateY(-2px)}
+.ovc svg{display:block; width:100%; height:92px}
+.ovc .in{padding:10px 14px 14px}
+.ovc .d{font-size:13px; color:var(--muted)}
+.ovc .t{font-family:"Noto Serif TC",serif; font-size:18px; margin:2px 0 8px}
+.ovc .row{font-size:14px; display:flex; gap:6px}
+.ovc .row i{font-style:normal; color:var(--muted); width:2.6em; flex:0 0 auto}
+.drop{display:inline-block; margin-top:8px; font-size:12px; background:#f6e9d8; color:#8a5a2b; border-radius:8px; padding:2px 8px}
+
+/* ---------- DAY ---------- */
+.day{padding-top:46px}
+.dayhead{border-radius:24px; overflow:hidden; background:var(--night); color:#fff; position:relative}
+.dayhead svg,.dayhead img{display:block; width:100%; height:clamp(210px,50vw,300px); object-fit:cover}
+.ovc img{display:block; width:100%; height:92px; object-fit:cover}
+.dayhead .cap{position:absolute; left:0; right:0; bottom:0; padding:60px 20px 18px;
+  background:linear-gradient(transparent, rgba(10,12,30,.82))}
+.dayhead .num{font-size:13px; letter-spacing:.25em; color:var(--gold-soft)}
+.dayhead h3{font-family:"Noto Serif TC",serif; font-size:clamp(22px,6vw,32px); margin:2px 0 0; line-height:1.25}
+.today{display:none; margin-left:8px; background:var(--gold); color:var(--night); font-size:12px; font-weight:700; padding:2px 8px; border-radius:6px; vertical-align:middle; letter-spacing:0}
+.is-today .today{display:inline-block}
+.motto{font-family:"Noto Serif TC",serif; font-size:17px; margin:18px 4px 6px; padding-left:14px; border-left:3px solid var(--gold)}
+
+.tl{list-style:none; margin:18px 0 0; padding:0; position:relative}
+.tl:before{content:""; position:absolute; left:61px; top:8px; bottom:8px; width:2px; background:repeating-linear-gradient(var(--line) 0 6px, transparent 6px 11px)}
+.tl li{display:grid; grid-template-columns:50px 26px 1fr; gap:0 10px; padding:9px 0; align-items:start}
+.tl .time{font-weight:700; font-size:14px; text-align:right; padding-top:3px; font-variant-numeric:tabular-nums}
+.tl .dot{width:26px; height:26px; border-radius:50%; background:var(--card); border:2px solid var(--gold); display:grid; place-items:center; font-size:13px; position:relative; z-index:1}
+.tl .what b{display:block; font-size:16px}
+.tl .what p{margin:2px 0 0; color:var(--muted); font-size:14px}
+.tl .meta{display:flex; flex-wrap:wrap; gap:6px; margin-top:6px}
+.tag{font-size:12px; border-radius:7px; padding:2px 8px; background:#eef0f6; color:#3b4166}
+.tag.go{background:#e5f0ea; color:#2f5a3c}
+.tag.cut{background:#f6e9d8; color:#8a5a2b}
+.tag.new{background:#fde8e2; color:#9a3b27}
+.maplink{font-size:12px; text-decoration:none; border:1px solid var(--line); border-radius:7px; padding:1px 8px; background:#fff}
+
+.sub-h{font-family:"Noto Serif TC",serif; font-size:19px; margin:26px 0 10px; display:flex; align-items:center; gap:8px}
+.foods{display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:10px}
+.food{display:flex; gap:12px; background:var(--card); border:1px solid var(--line); border-radius:16px; padding:12px; text-decoration:none}
+.glyph{flex:0 0 56px; height:56px; border-radius:14px; display:grid; place-items:center; font-family:"Noto Serif TC",serif; font-size:28px; font-weight:900; color:#fff}
+.food b{display:block; font-size:15px; line-height:1.35}
+.food span{display:block; font-size:13px; color:var(--muted); margin-top:2px}
+.food em{font-style:normal; font-size:12px; color:var(--sea); display:inline-block; margin-top:4px}
+
+.tips{margin-top:20px; background:linear-gradient(135deg,#fff7e8,#fffdf8); border:1px solid #f0dfbd; border-radius:var(--radius); padding:16px 18px}
+.tips h4{margin:0 0 8px; font-size:16px; display:flex; align-items:center; gap:6px}
+.tips ul{margin:0; padding-left:20px}
+.tips li{margin:5px 0; font-size:15px}
+.cutbox{margin-top:12px; display:flex; gap:10px; align-items:center; background:#f6e9d8; border-radius:14px; padding:10px 14px; font-size:15px; color:#6d4520}
+
+/* ---------- TABLES & LISTS ---------- */
+.rules{display:grid; gap:8px}
+.rule{display:flex; justify-content:space-between; gap:10px; background:var(--card); border:1px solid var(--line); border-radius:12px; padding:10px 14px; font-size:15px}
+.rule span:last-child{font-weight:700; white-space:nowrap}
+.check{list-style:none; padding:0; margin:0; display:grid; gap:8px}
+.check label{display:flex; gap:10px; align-items:flex-start; background:var(--card); border:1px solid var(--line); border-radius:12px; padding:10px 14px; cursor:pointer}
+.check input{width:20px; height:20px; margin-top:3px; accent-color:var(--matcha); flex:0 0 auto}
+.check input:checked + span{text-decoration:line-through; color:var(--muted)}
+.check small{display:block; color:var(--muted)}
+.weather{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:14px}
+.weather div{background:var(--night); color:#fff; border-radius:16px; padding:14px; text-align:center}
+.weather b{display:block; font-family:"Noto Serif TC",serif; font-size:28px; color:var(--gold)}
+.weather small{color:#c9c8da}
+.tipcards{display:grid; gap:10px}
+.tipcards div{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:12px 14px}
+
+footer{margin-top:48px; background:var(--night); color:#c9c8da; padding:30px 0 40px; font-size:13px}
+footer a{color:var(--gold-soft)}
+footer h5{color:#fff; font-size:15px; margin:0 0 8px}
+footer ul{padding-left:18px; margin:6px 0 0}
+</style>
+</head>
+<body>
+
+<header class="hero" id="top">
+  <div class="wrap" style="position:relative">
+    <p class="eyebrow">2026 · 12.13 — 12.18</p>
+    <h1>大阪<br><span>冬日慢旅</span></h1>
+    <p class="sub">六天五夜</p>
+    <div class="pills">
+      <span class="pill">🏨 飯店離難波站步行 4 分</span>
+      <span class="pill">🚕 能搭車就不硬走</span>
+      <span class="pill">☕ 每天都留休息時間</span>
+    </div>
+  </div>
+</header>
+
+<nav class="nav" aria-label="行程日期"><div class="wrap" id="nav"></div></nav>
+
+<main class="wrap">
+  <section id="overview">
+    <h2 class="h2">先記住這三件事</h2>
+    <p class="lead">出發前和當天最容易忘、但影響最大的事。</p>
+    <div class="must">
+      <div><b>📞 先訂 12/14 晚上 19:00 的燒肉力丸</b>吃到飽、限時 90 分鐘，熱門時段建議先線上訂位。</div>
+      <div><b>⛩️ 12/17 一到平等院，先去領鳳凰堂內部參觀的時間券</b>現場先到先得，每 20 分鐘一梯，旺季會提早發完。</div>
+      <div><b>🧣 晚上看燈要穿暖</b>12 月大阪平均氣溫不到 9℃，12/13、12/16 都會在戶外看燈，記得帶圍巾和暖暖包。</div>
+    </div>
+
+    <h2 class="h2" style="margin-top:36px">六天總覽</h2>
+    <p class="lead">點卡片可以跳到當天。黃色標籤是「累了就刪這個」。</p>
+    <div class="ov" id="ov"></div>
+  </section>
+
+  <div id="days"></div>
+
+  <section id="transport">
+    <h2 class="h2">長輩交通規則</h2>
+    <p class="lead">原則：車程超過 10 分鐘就讓長輩有位子坐；距離短但要上坡，就直接叫計程車。</p>
+    <div class="rules" id="rules"></div>
+  </section>
+
+  <section id="checklist">
+    <h2 class="h2">預約＆待決定</h2>
+    <p class="lead">打勾的項目只會記在你這支手機的瀏覽器裡，不會同步給其他人。</p>
+    <ul class="check" id="check"></ul>
+  </section>
+
+  <section id="tips">
+    <h2 class="h2">行前提醒</h2>
+    <div class="weather">
+      <div><b>12°</b><small>12 月平均最高溫</small></div>
+      <div><b>9°</b><small>12 月平均氣溫</small></div>
+      <div><b>5°</b><small>12 月平均最低溫</small></div>
+    </div>
+    <div class="tipcards">
+      <div>🧥 <b>穿衣：</b>大阪 12 月很少下雪，但晚上冷。建議毛衣＋厚外套或羽絨衣，晚上看燈加圍巾、手套。</div>
+      <div>🪪 <b>地址卡：</b>幫兩位長輩各準備一張卡片，寫上飯店的日文名稱、地址和電話，放在身上。搭計程車時也可以直接給司機看。</div>
+      <div>🚃 <b>搭車：</b>車程超過 10 分鐘就優先讓長輩坐。人多的車站和百貨公司裡，要讓長輩一直在視線範圍內。</div>
+      <div>✈️ <b>回程：</b>回程航班時間還沒定。國際線至少提前 3 小時到關西機場，從起飛時間往回推最後一天的行程。</div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <h5>資料說明</h5>
+    營業時間、活動日期和票價都是在 2026/11/19 上網查的，出發前一週請再看一次官網。插畫是示意圖；點「地圖」可以在 Google 地圖看到官方和網友的照片。
+    <ul>
+      <li><a href="https://www.city.osaka.lg.jp/hodoshiryo/keizaisenryaku/0000687506.html">大阪・光的饗宴 2026 官方公告（大阪市）</a></li>
+      <li><a href="https://www.nact.jp/artcommons/user/detail/82769">NHK「日曜美術館」50年展（大阪中之島美術館）</a></li>
+      <li><a href="https://www.pref.kyoto.jp/kyotoyamashirokanko/treasure_1.html">平等院 參觀資訊（京都府）</a></li>
+      <li><a href="https://gurunavi.com/en/kabs812/rst">焼肉力丸 なんば道頓堀店（ぐるなび）</a></li>
+    </ul>
+    <p style="margin-top:18px"><a href="#top">↑ 回到最上面</a></p>
+  </div>
+</footer>
+
+<script>
+/* ============ ILLUSTRATIONS (original, generic) ============ */
+const ART = {
+dotonbori:`<svg viewBox="0 0 600 260" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+<defs><linearGradient id="g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0d1228"/><stop offset="1" stop-color="#30244f"/></linearGradient></defs>
+<rect width="600" height="260" fill="url(#g1)"/>
+<g fill="#fff" opacity=".7"><circle cx="60" cy="30" r="1.2"/><circle cx="140" cy="18" r="1"/><circle cx="420" cy="26" r="1.3"/><circle cx="530" cy="44" r="1"/><circle cx="300" cy="12" r="1"/></g>
+<g fill="#161b36">
+<rect x="0" y="90" width="70" height="105"/><rect x="66" y="60" width="60" height="135"/><rect x="122" y="100" width="54" height="95"/><rect x="172" y="44" width="66" height="151"/><rect x="234" y="84" width="48" height="111"/>
+<rect x="318" y="70" width="58" height="125"/><rect x="372" y="36" width="70" height="159"/><rect x="438" y="96" width="50" height="99"/><rect x="484" y="58" width="64" height="137"/><rect x="544" y="88" width="56" height="107"/></g>
+<g>
+<rect x="80" y="74" width="12" height="70" rx="2" fill="#e8b45a"/><rect x="186" y="58" width="40" height="22" rx="3" fill="#c8553d"/><rect x="186" y="88" width="40" height="14" rx="3" fill="#6fb3c9"/>
+<rect x="132" y="112" width="34" height="18" rx="3" fill="#f2d27a"/><rect x="384" y="50" width="46" height="26" rx="4" fill="#e8b45a"/><rect x="396" y="84" width="12" height="60" rx="2" fill="#c8553d"/>
+<rect x="494" y="72" width="44" height="18" rx="3" fill="#8fd1b5"/><rect x="330" y="84" width="34" height="34" rx="17" fill="#f08a6a"/><rect x="246" y="98" width="24" height="40" rx="3" fill="#6fb3c9"/><rect x="552" y="102" width="38" height="16" rx="3" fill="#f2d27a"/>
+<rect x="10" y="104" width="46" height="14" rx="3" fill="#c8553d"/></g>
+<g fill="#ffe7b0" opacity=".55">${Array.from({length:40},(_,i)=>`<rect x="${8+i*15}" y="${150+(i%3)*12}" width="5" height="5"/>`).join('')}</g>
+<rect y="195" width="600" height="65" fill="#0b1024"/>
+<path d="M190 200 Q300 150 410 200" stroke="#3a3f63" stroke-width="10" fill="none"/>
+<g opacity=".45"><rect x="80" y="205" width="12" height="40" fill="#e8b45a"/><rect x="186" y="205" width="40" height="10" fill="#c8553d"/><rect x="384" y="206" width="46" height="12" fill="#e8b45a"/><rect x="396" y="222" width="12" height="28" fill="#c8553d"/><rect x="494" y="210" width="44" height="8" fill="#8fd1b5"/></g>
+<g stroke="#ffffff" stroke-opacity=".15"><line x1="40" y1="232" x2="120" y2="232"/><line x1="300" y1="244" x2="380" y2="244"/><line x1="460" y1="228" x2="560" y2="228"/></g>
+</svg>`,
+castle:`<svg viewBox="0 0 600 260" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+<defs><linearGradient id="g2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#bcd9e6"/><stop offset="1" stop-color="#f6e7cf"/></linearGradient></defs>
+<rect width="600" height="260" fill="url(#g2)"/>
+<g fill="#fff" opacity=".8"><ellipse cx="110" cy="56" rx="46" ry="12"/><ellipse cx="140" cy="48" rx="28" ry="12"/><ellipse cx="480" cy="40" rx="50" ry="11"/></g>
+<g opacity=".35" fill="#7b8fa3"><rect x="470" y="96" width="14" height="110"/><rect x="500" y="96" width="14" height="110"/><rect x="466" y="88" width="52" height="10"/></g>
+<rect y="214" width="600" height="46" fill="#7f9c6f"/>
+<g fill="#4e6b47"><ellipse cx="70" cy="214" rx="70" ry="26"/><ellipse cx="540" cy="216" rx="80" ry="28"/><ellipse cx="160" cy="220" rx="40" ry="16"/></g>
+<polygon points="180,232 420,232 402,184 198,184" fill="#9a958a"/>
+<g stroke="#7c776d" stroke-width="1.2"><line x1="190" y1="200" x2="410" y2="200"/><line x1="186" y1="216" x2="414" y2="216"/></g>
+<g>
+<rect x="216" y="156" width="168" height="30" fill="#f6f2ea"/><polygon points="196,158 404,158 380,140 220,140" fill="#4f7f6f"/>
+<rect x="232" y="118" width="136" height="24" fill="#f6f2ea"/><polygon points="214,120 386,120 364,104 236,104" fill="#4f7f6f"/>
+<rect x="246" y="84" width="108" height="22" fill="#f6f2ea"/><polygon points="230,86 370,86 350,72 250,72" fill="#4f7f6f"/>
+<rect x="258" y="56" width="84" height="18" fill="#f6f2ea"/><polygon points="244,58 356,58 340,45 260,45" fill="#4f7f6f"/>
+<rect x="270" y="32" width="60" height="15" fill="#f6f2ea"/><polygon points="256,34 344,34 330,20 270,20" fill="#4f7f6f"/>
+<g fill="#e8b45a"><polygon points="268,20 274,10 278,20"/><polygon points="322,20 326,10 332,20"/><rect x="214" y="138" width="172" height="3"/><rect x="234" y="102" width="132" height="3"/><rect x="248" y="70" width="104" height="3"/><rect x="258" y="43" width="84" height="3"/></g>
+<g fill="#2d3b3a">${[230,256,282,308,334,360].map(x=>`<rect x="${x}" y="164" width="10" height="12"/>`).join('')}${[246,272,298,324,350].map(x=>`<rect x="${x}" y="124" width="9" height="10"/>`).join('')}${[262,288,314,336].map(x=>`<rect x="${x}" y="90" width="8" height="9"/>`).join('')}</g>
+</g>
+</svg>`,
+kobe:`<svg viewBox="0 0 600 260" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+<defs><linearGradient id="g3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#a9d3e3"/><stop offset="1" stop-color="#f5ecdd"/></linearGradient></defs>
+<rect width="600" height="260" fill="url(#g3)"/>
+<path d="M0 150 Q90 90 180 130 T360 110 T600 120 V200 H0z" fill="#8fb0a6" opacity=".55"/>
+<path d="M0 170 Q120 140 240 160 T600 150 V200 H0z" fill="#6f9a8c" opacity=".55"/>
+<rect y="196" width="600" height="64" fill="#3f7f9c"/>
+<g stroke="#fff" stroke-opacity=".35"><line x1="30" y1="214" x2="110" y2="214"/><line x1="200" y1="232" x2="280" y2="232"/><line x1="420" y1="220" x2="520" y2="220"/></g>
+<rect x="360" y="160" width="120" height="38" fill="#f4f1ea"/><path d="M360 160 Q420 130 480 160" fill="none" stroke="#dcd6ca" stroke-width="6"/>
+<g stroke="#cfc8ba" stroke-width="1">${[372,388,404,420,436,452,468].map(x=>`<line x1="${x}" y1="162" x2="${x}" y2="196"/>`).join('')}</g>
+<path d="M270 198 C286 170 296 140 294 118 C292 96 280 74 276 52 L324 52 C320 74 308 96 306 118 C304 140 314 170 330 198 Z" fill="#c8553d"/>
+<g stroke="#fff" stroke-opacity=".55" stroke-width="1.2" fill="none"><path d="M280 190 L318 60"/><path d="M320 190 L282 60"/><path d="M276 170 L322 170"/><path d="M290 130 L310 130"/><path d="M282 90 L318 90"/></g>
+<rect x="272" y="40" width="56" height="14" rx="3" fill="#a8432f"/><rect x="296" y="22" width="8" height="18" fill="#a8432f"/>
+<g fill="#fff"><path d="M120 214 h70 l-10 14 h-52z"/><rect x="140" y="200" width="30" height="14"/></g><rect x="150" y="190" width="6" height="10" fill="#c8553d"/>
+<g stroke="#4a5a6a" stroke-width="1.6" fill="none"><path d="M90 70 q6 -6 12 0 q6 -6 12 0"/><path d="M500 60 q5 -5 10 0 q5 -5 10 0"/></g>
+</svg>`,
+nakanoshima:`<svg viewBox="0 0 600 260" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+<defs><linearGradient id="g4" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0d1228"/><stop offset="1" stop-color="#2a2450"/></linearGradient>
+<radialGradient id="glow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#ffd98a" stop-opacity=".55"/><stop offset="1" stop-color="#ffd98a" stop-opacity="0"/></radialGradient></defs>
+<rect width="600" height="260" fill="url(#g4)"/>
+<ellipse cx="360" cy="130" rx="240" ry="110" fill="url(#glow)"/>
+<g fill="#fff">${Array.from({length:34},(_,i)=>`<circle cx="${(i*67)%600}" cy="${(i*41)%150+8}" r="${i%3?1:1.8}" opacity="${.4+(i%4)*.15}"/>`).join('')}</g>
+<g>
+<rect x="250" y="96" width="220" height="104" fill="#8a3f2e"/>
+<path d="M300 96 Q360 40 420 96 Z" fill="#9b4a36"/>
+<rect x="240" y="88" width="240" height="10" fill="#e9d9bf"/>
+<path d="M326 200 V140 Q360 108 394 140 V200 Z" fill="#ffcf6e"/>
+<path d="M326 200 V140 Q360 108 394 140 V200 Z" fill="none" stroke="#fff3cf" stroke-width="3"/>
+<g fill="#ffd98a">${[266,290,414,438].map(x=>`<rect x="${x}" y="112" width="14" height="22" rx="7"/><rect x="${x}" y="152" width="14" height="22" rx="7"/>`).join('')}</g>
+<g fill="#ffffff" opacity=".85"><path d="M300 74 l3 6 6 1 -5 4 1 6 -5 -3 -5 3 1 -6 -5 -4 6 -1z"/><path d="M440 60 l2 4 4 1 -3 3 1 4 -4 -2 -4 2 1 -4 -3 -3 4 -1z"/><circle cx="350" cy="62" r="2"/><circle cx="380" cy="54" r="1.6"/></g>
+</g>
+<g>${Array.from({length:6},(_,r)=>Array.from({length:10},(_,c)=>`<circle cx="${20+c*20+(r%2)*10}" cy="${90+r*18}" r="2.4" fill="#ffd98a" opacity="${.5+((r+c)%3)*.2}"/>`).join('')).join('')}</g>
+<g fill="#1a1f3d"><rect x="18" y="196" width="6" height="10"/><rect x="98" y="196" width="6" height="10"/><rect x="178" y="196" width="6" height="10"/></g>
+<rect y="204" width="600" height="56" fill="#0b1024"/>
+<rect x="326" y="210" width="68" height="40" fill="#ffcf6e" opacity=".22"/>
+<g fill="#ffd98a" opacity=".25">${Array.from({length:10},(_,c)=>`<circle cx="${20+c*20}" cy="220" r="2"/>`).join('')}</g>
+</svg>`,
+uji:`<svg viewBox="0 0 600 260" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+<defs><linearGradient id="g5" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f6e6c4"/><stop offset="1" stop-color="#efcf98"/></linearGradient>
+<clipPath id="pond"><rect y="164" width="600" height="96"/></clipPath>
+<g id="hall">
+<g fill="#4e6b47"><ellipse cx="40" cy="150" rx="60" ry="40"/><ellipse cx="570" cy="146" rx="70" ry="44"/></g>
+<rect x="100" y="116" width="26" height="46" fill="#f4ede0"/><polygon points="92,118 134,118 125,102 101,102" fill="#5a4a3e"/>
+<rect x="474" y="116" width="26" height="46" fill="#f4ede0"/><polygon points="466,118 508,118 499,102 475,102" fill="#5a4a3e"/>
+<rect x="120" y="140" width="130" height="22" fill="#f4ede0"/><polygon points="112,142 250,142 250,130 122,130" fill="#5a4a3e"/>
+<rect x="350" y="140" width="130" height="22" fill="#f4ede0"/><polygon points="350,142 488,142 478,130 350,130" fill="#5a4a3e"/>
+<rect x="242" y="112" width="116" height="50" fill="#f4ede0"/>
+<polygon points="216,116 384,116 352,92 248,92" fill="#5a4a3e"/>
+<polygon points="238,92 362,92 336,72 264,72" fill="#5a4a3e"/>
+<g fill="#c8553d">${[130,150,170,190,210,230,250,262,282,302,318,338,350,370,390,410,430,450,470].map(x=>`<rect x="${x}" y="140" width="3" height="22"/>`).join('')}</g>
+<rect x="282" y="122" width="36" height="40" fill="#c8553d"/><rect x="288" y="128" width="24" height="34" fill="#e8b45a" opacity=".85"/>
+<g fill="#e8b45a"><path d="M264 72 l-6 -10 10 4z"/><path d="M336 72 l6 -10 -10 4z"/></g>
+<rect x="90" y="160" width="420" height="4" fill="#8a7a66"/>
+</g></defs>
+<rect width="600" height="260" fill="url(#g5)"/>
+<circle cx="470" cy="56" r="22" fill="#fff4dc" opacity=".9"/>
+<use href="#hall"/>
+<rect y="164" width="600" height="96" fill="#86ab9b"/>
+<g clip-path="url(#pond)" opacity=".28"><use href="#hall" transform="translate(0,328) scale(1,-1)"/></g>
+<g stroke="#fff" stroke-opacity=".35"><line x1="60" y1="200" x2="160" y2="200"/><line x1="380" y1="226" x2="500" y2="226"/><line x1="220" y1="244" x2="300" y2="244"/></g>
+</svg>`,
+fly:`<svg viewBox="0 0 600 260" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+<defs><linearGradient id="g6" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3b2f5c"/><stop offset=".55" stop-color="#c8553d"/><stop offset="1" stop-color="#f2b880"/></linearGradient></defs>
+<rect width="600" height="260" fill="url(#g6)"/>
+<circle cx="150" cy="186" r="46" fill="#ffd9a0" opacity=".9"/>
+<g fill="#fff" opacity=".25"><ellipse cx="420" cy="90" rx="70" ry="10"/><ellipse cx="200" cy="70" rx="50" ry="8"/></g>
+<path d="M120 150 Q300 120 430 70" stroke="#fff" stroke-opacity=".45" stroke-width="2" stroke-dasharray="4 7" fill="none"/>
+<g transform="translate(450 62) rotate(-18)" fill="#fff">
+<path d="M-50 0 C-40 -6 30 -6 44 -2 C52 0 52 4 44 6 C30 10 -40 8 -50 2 Z"/>
+<path d="M-4 0 L-26 -30 L-14 -30 L14 -2 Z"/><path d="M-4 4 L-22 30 L-10 30 L14 6 Z"/><path d="M-44 0 L-54 -16 L-46 -16 L-34 0Z"/>
+</g>
+<path fill="#2a2140" d="M0 260V214h24v-14h18v14h26v-26h14v26h30v-10h20v10h40v-34h12v34h36v-18h24v18h30v-30h16v30h28v-12h22v12h26v-40h14v40h30v-20h22v20h24v-28h18v28h40v-16h20v16h16v46z"/>
+<g fill="#ffd98a" opacity=".6">${Array.from({length:24},(_,i)=>`<rect x="${12+i*24}" y="${226+(i%2)*10}" width="4" height="4"/>`).join('')}</g>
+</svg>`
+};
+
+/* ============ DATA ============ */
+const M = q => 'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(q);
+const DAYS = [
+{id:'day1', photo:'img/d1.jpg', date:'12/13', dow:'日', art:'dotonbori', title:'抵達・道頓堀夜燈',
+ am:'✈️ 抵達', pm:'🏨 飯店休息', ev:'道頓堀＋御堂筋燈飾', drop:'全部不用硬排',
+ motto:'今天的原則：哪裡都不要去。帶兩位長輩，第一天把體力留下來最重要。',
+ tl:[
+  {t:'抵達', i:'✈️', b:'關西機場 → 難波 → 飯店', p:'行李不多就搭南海電鐵到南海難波，再走到飯店（離大阪 Metro 難波站約 4 分）。', tags:[['go','南海電鐵']]},
+  {t:'下午', i:'🏨', b:'飯店 check-in、休息', p:'先躺一下，不要安排景點。'},
+  {t:'17:00', i:'✨', b:'御堂筋燈飾', p:'燈飾一路延伸到難波，飯店附近就看得到，順路看一小段就好，不用走完 4 公里。', tags:[['new','2026：11/3–12/31，17:00 左右到凌晨 1:00']], map:M('御堂筋イルミネーション 難波')},
+  {t:'晚餐', i:'🍜', b:'道頓堀簡單吃', p:'薩利亞或鈍屋拉麵，二選一。'}
+ ],
+ food:[
+  {g:'薩', c:'#5f8a5a', n:'薩利亞 Saizeriya', s:'便宜、選擇多，長輩好入口', link:'https://maps.app.goo.gl/VgzsuYdq5Lenezdv5?g_st=ic'},
+  {g:'麵', c:'#c8553d', n:'鈍屋拉麵 心齋橋店', s:'24 小時營業・招牌蒜味炒飯', link:'https://maps.app.goo.gl/hgg8emQJkbfarrKy8?g_st=ic'}
+ ],
+ tips:['到飯店後把明天要搭計程車的日文目的地（大阪城天守閣）先存在手機裡。','道頓堀晚上人很多，一定要讓長輩走在你的視線範圍內。']
+},
+{id:'day2', photo:'img/d2.jpg', date:'12/14', dow:'一', art:'castle', title:'大阪城・梅田夕景・燒肉',
+ am:'🏯 大阪城', pm:'🌇 梅田藍天大廈', ev:'🥩 19:00 力丸', drop:'大阪城天守閣內部',
+ motto:'整趟最精華的一天之一。大阪城的重點是看天守閣、拍照、找地方坐，不是把公園走完。',
+ tl:[
+  {t:'08:30', i:'☀️', b:'起床・早餐', p:'早餐不要吃太晚。'},
+  {t:'09:30', i:'🚕', b:'飯店 → 大阪城（計程車）', p:'約 20–25 分鐘，車資抓 ¥2,000–3,000，請司機盡量開到靠近天守閣的地方。', tags:[['go','計程車']]},
+  {t:'10:00', i:'🏯', b:'大阪城天守閣', p:'狀態好就進天守閣；腿痠就在外面拍照，一樣很值得。', tags:[['','9:00–18:00・大人 ¥1,200'],['cut','可刪：天守閣內部']], map:M('大阪城天守閣')},
+  {t:'12:00', i:'🚕', b:'大阪城 → 梅田・午餐', p:'大阪城附近不用特地找名店，到梅田再吃。'},
+  {t:'14:00', i:'🛍️', b:'梅田地下街／Grand Front Osaka', p:'休息緩衝區：有百貨、咖啡廳、廁所、椅子和暖氣。'},
+  {t:'15:45', i:'🌇', b:'梅田藍天大廈 空中庭園展望台', p:'上去之後坐著看市景，再等夕陽和夜景。', tags:[['','9:30–22:30（22:00 最後入場）・大人 ¥2,000'],['new','12 月日落約 16:50']], map:M('梅田スカイビル 空中庭園展望台')},
+  {t:'18:00', i:'🚇', b:'梅田 → 難波', p:'Osaka Metro 御堂筋線，一條線直達，不用換車。'},
+  {t:'19:00', i:'🥩', b:'燒肉力丸 なんば道頓堀店', p:'吃到飽，可選 90 或 120 分鐘。', tags:[['new','週一 16:00 才開，19:00 沒問題'],['','建議先訂位']], map:'https://gurunavi.com/en/kabs812/rst'}
+ ],
+ food:[
+  {g:'鬆', c:'#e8a35a', n:'舒芙蕾鬆餅', s:'梅田午餐／下午茶', link:'https://maps.app.goo.gl/wygmJS9kZa1G9jfU8?g_st=ic'},
+  {g:'肉', c:'#8a3f2e', n:'焼肉力丸 なんば道頓堀店', s:'吃到飽 ¥3,498 / ¥4,158 / 和牛 ¥5,478', h:'道頓堀 1-9-1 5F', link:'https://gurunavi.com/en/kabs812/rst'}
+ ],
+ tips:['天守閣：買完票後有一段樓梯，可以跟剪票口的工作人員說要搭電梯，他們會帶你們到專用電梯。','天守閣現場買票常常要排隊，可以先在網路上買。','藍天大廈：夕陽到夜景這段最漂亮，但也最擠。15:45 左右上去，可以先找到位子。','力丸：網友說客滿的時候店員比較忙、服務比較慢，點餐可以一次多點一點。']
+},
+{id:'day3', photo:'img/d3.jpg', date:'12/15', dow:'二', art:'kobe', title:'神戶港町一日',
+ am:'🚃 神戶三宮', pm:'🥟 南京町 → 港邊', ev:'回難波', drop:'Harborland',
+ motto:'阪神電車從難波直通三宮，不用換車。今天把吃的排在一條順路的動線上。',
+ tl:[
+  {t:'09:30', i:'🚃', b:'大阪難波 → 神戶三宮', p:'阪神なんば線快速急行，約 41–45 分鐘，直通不用換車。', tags:[['go','阪神電車']]},
+  {t:'10:20', i:'☕', b:'三宮先找咖啡廳坐 20–30 分', p:'讓長輩先休息一下再開始走。'},
+  {t:'11:00', i:'🐙', b:'明石燒 TACHIBANA', p:'11:00 開門，一人份 10 顆。三個人點 2 人份就好，留胃給後面。', tags:[['new','開門前常有人排隊'],['','店內只能拍明石燒']], map:'https://maps.app.goo.gl/SmkJmRh2FBxBYk1C9?g_st=ic'},
+  {t:'11:45', i:'🚶', b:'三宮 → 南京町', p:'慢慢走過去；腳累就直接搭計程車。'},
+  {t:'12:00', i:'🥟', b:'南京町＋午餐', p:'可以邊走邊吃（森谷商店的可樂餅、牛肉餅），想吃正餐就選一家神戶牛。', map:M('南京町 神戸')},
+  {t:'14:00', i:'☕', b:'南京町附近休息', p:'不要馬上去下一個點，先喝咖啡、逛逛小店。'},
+  {t:'15:00', i:'🚕', b:'南京町 → Harborland（計程車）', p:'走路要 20–30 分鐘，不要讓長輩走。', tags:[['go','計程車']]},
+  {t:'15:20', i:'🌊', b:'神戶 Harborland・神戶塔港景', p:'有商場、廁所、咖啡廳，可以在室內休息看港景。', tags:[['cut','可刪：15:00 已經累就直接回三宮']], map:'https://maps.app.goo.gl/RvaAgA96eTzf8ymo6?g_st=ic'},
+  {t:'17:00', i:'🚃', b:'神戶三宮 → 大阪難波', p:'阪神快速急行。從 Harborland 搭計程車回三宮最省力。'},
+  {t:'18:30', i:'🍲', b:'晚餐：溫野菜 或 Life 超市買回飯店', p:'玩了一整天，晚餐簡單就好。'}
+ ],
+ food:[
+  {g:'燒', c:'#e8a35a', n:'明石燒 TACHIBANA', s:'玉子燒口感、沾高湯吃', h:'11:00 開門', link:'https://maps.app.goo.gl/SmkJmRh2FBxBYk1C9?g_st=ic'},
+  {g:'餅', c:'#8a3f2e', n:'本神戶肉 森谷商店', s:'可樂餅、牛肉餅，邊走邊吃', h:'10:00–20:00', link:'https://maps.app.goo.gl/BJwam7uTmQeBpKyf6?g_st=ic'},
+  {g:'麵', c:'#d8b26e', n:'Flower Bakery 吐司', s:'可以買回去當明天的早餐', link:'https://maps.app.goo.gl/kfJUh6FE2VvuJFHn8?g_st=ic'},
+  {g:'牛', c:'#5a3a30', n:'神戶牛午餐（三選一）', s:'煌壽 鐵板燒／TAKAKURA／Royal Mouriya', link:M('Kobe Beef Steak Royal Mouriya')},
+  {g:'珈', c:'#5f8a5a', n:'星巴克 北野異人館店', s:'⚠️ 在山坡上、和南京町反方向', link:'https://maps.app.goo.gl/5sioqP29B6FetY37A?g_st=ic'}
+ ],
+ tips:['北野異人館在三宮北邊的山坡上，跟南京町、港邊是反方向。真的想去星巴克，建議計程車上下，不然直接跳過。','明石燒 TACHIBANA 的さんプラザ店每月第 2、4 個週三公休；12/15 是週二，不受影響。','神戶光之雕刻節（Luminarie）今年是 2027/1/29–2/7，這趟看不到；不過 11/28–12/25 南京町有配合的燈飾。','神戶牛午餐如果要吃，建議先訂位，免得長輩在門口排隊。']
+},
+{id:'day4', photo:'img/d4.jpg', date:'12/16', dow:'三', art:'nakanoshima', title:'中之島・美術館・看燈',
+ am:'🎨 中之島美術館', pm:'☕ 休息', ev:'✨ 光之ルネサンス', drop:'燈光街',
+ motto:'坐著看藝術，晚上看燈。中間兩小時故意空著，長輩累了就回飯店睡午覺。',
+ tl:[
+  {t:'09:30', i:'🚇', b:'難波 → 肥後橋', p:'Osaka Metro 四橋線直達肥後橋，走到美術館約 10 分鐘，不用再轉京阪。也可以直接搭計程車。', tags:[['go','四橋線']]},
+  {t:'10:30', i:'🎨', b:'大阪中之島美術館｜NHK「日曜美術館」50年展', p:'約 60 位藝術家、140 多件作品，從繩文土器、工藝到現代藝術都有。', tags:[['','10:00–17:00（16:30 最後入場）'],['','展期到 12/20，週一休館'],['new','12/16 在展期內 ✓']], map:M('大阪中之島美術館')},
+  {t:'12:30', i:'🍽️', b:'中之島午餐', p:'不要離開中之島太遠，例如 Awake 或 GARB Weeks。'},
+  {t:'14:00', i:'😴', b:'自由休息', p:'咖啡廳、百貨公司，或回飯店睡午覺，17:00 再出門。'},
+  {t:'17:00', i:'🏛️', b:'① 大阪市役所正面｜燈光＋投影', p:'市役所的大廳可以當休息處。', tags:[['','每天 17:00 到凌晨 1:00']], map:M('大阪市役所')},
+  {t:'17:30', i:'✨', b:'② 大阪市中央公會堂 Projection Mapping', p:'今年的主題是「大阪，光的祝夜祭」，會有雪花、星星和聖誕老人。', tags:[['new','17:30–21:30，每 12 分鐘一輪，一輪約 7 分鐘'],['','免費']], map:M('大阪市中央公会堂')},
+  {t:'18:30', i:'🌳', b:'③ 中之島燈光街', p:'約 150 公尺的櫸樹燈光隧道。', tags:[['cut','可刪：累了就只看 ①②']]},
+  {t:'19:00', i:'🍲', b:'晚餐', p:'溫野菜涮涮鍋，暖身最適合；或是無限拉麵。'}
+ ],
+ food:[
+  {g:'涮', c:'#5f8a5a', n:'溫野菜', s:'涮涮鍋，看完燈正好暖身', link:'https://maps.app.goo.gl/gnUzpVEsj68bEJPH6?g_st=ic'},
+  {g:'麵', c:'#c8553d', n:'無限拉麵（候選）', s:'還沒決定，看當天狀況', link:'https://maps.app.goo.gl/GD2d2xSEhk9qCDBC6?g_st=ic'},
+  {g:'冰', c:'#3f7f9c', n:'冰狗', s:'', link:'https://maps.app.goo.gl/tuhPqQdwcPtBjuw96?g_st=ic'},
+  {g:'菓', c:'#e8a35a', n:'吉壽屋零食', s:'零食伴手禮，最後一天買也可以', link:'https://maps.app.goo.gl/8Sk8QMqxTooHZFpe8?g_st=ic'}
+ ],
+ tips:['OSAKA 光之文藝復興 2026 的正式期間是 12/11–12/25，你們 12/16 去剛好。','公會堂投影大約 12 分鐘一輪，錯過一輪就在旁邊等一下，不用急著衝。','美術館這次的展覽有一張可以摸、可以坐的「狼長椅」（鴻池朋子的作品），剛好可以讓長輩坐下來休息兼拍照。','晚上在戶外站著看燈會比白天冷很多，出門前再加一件外套。']
+},
+{id:'day5', photo:'img/d5.jpg', date:'12/17', dow:'四', art:'uji', title:'宇治・平等院・抹茶',
+ am:'🚃 宇治', pm:'🍵 平等院 → 宇治川', ev:'回難波', drop:'宇治川散步',
+ motto:'只把平等院當主景點，其他都是加分。比奈良更適合你們：不去奈良公園、不去東大寺。',
+ tl:[
+  {t:'09:15', i:'🚇', b:'難波 → 淀屋橋', p:'御堂筋線，約 10 分鐘。'},
+  {t:'09:35', i:'🚃', b:'京阪 淀屋橋 → 中書島 → 宇治', p:'在中書島轉京阪宇治線，全程約 1 小時。淀屋橋是起站，比較好找到位子。', tags:[['go','京阪電車']]},
+  {t:'10:40', i:'⛩️', b:'平等院', p:'一進去先去領鳳凰堂內部參觀的時間券，再逛庭園和鳳翔館。', tags:[['','8:45–17:30・¥700'],['new','鳳凰堂內部另加 ¥300，9:10 起發時間券']], map:M('平等院')},
+  {t:'12:30', i:'🍵', b:'抹茶午餐｜中村藤吉本店 宇治本店', p:'創業 170 多年的老茶舖，招牌是生茶果凍和竹筒抹茶聖代。', tags:[['','不能預約'],['new','旺季可能要等 1 小時']], map:M('中村藤吉本店 宇治本店')},
+  {t:'14:00', i:'🌊', b:'宇治川＋表參道', p:'慢慢走，看到茶店就進去坐。腳累就直接回宇治站。', tags:[['cut','可刪：宇治川散步']]},
+  {t:'15:30', i:'🚃', b:'宇治 → 淀屋橋 → 難波', p:'17:00 左右回到飯店休息。'},
+  {t:'18:30', i:'🍜', b:'晚餐：飯店附近', p:'候選：力丸、花丸軒、薩利亞，或 Life 超市。'}
+ ],
+ food:[
+  {g:'茶', c:'#5f8a5a', n:'中村藤吉本店 宇治本店', s:'生茶果凍・竹筒抹茶聖代', h:'約 10:00–17:30（16:30 最後點餐）', link:M('中村藤吉本店 宇治本店')},
+  {g:'茶', c:'#7a9a55', n:'伊藤久右衛門 宇治本店（備案）', s:'抹茶聖代、茶蕎麥麵，中村藤吉排太久就改來這裡', link:M('伊藤久右衛門 宇治本店')},
+  {g:'麵', c:'#c8553d', n:'花丸軒（晚餐候選）', s:'回難波後的晚餐', link:M('花丸軒 難波')}
+ ],
+ tips:['鳳凰堂內部參觀：9:10 開始在現場發時間券，先到先得，每 20 分鐘一梯。2026/10/16 起每梯從 50 人減為 35 人，旺季可能很早就發完，一到平等院就先去領。','中村藤吉不能預約，旺季可能要等 1 小時。可以從平等院出來就先去登記排隊，或直接改去伊藤久右衛門。','長輩如果容易暈車，京阪特急可以加購座位指定的 Premium Car，比較穩、也一定有位子。','京阪官方推薦的宇治散步路線約 2.3 公里，你們不需要走完。']
+},
+{id:'day6', date:'12/18', dow:'五', art:'fly', title:'最後採買・平安回家',
+ am:'🛍️ 難波心齋橋', pm:'午餐 → 拿行李', ev:'✈️ 關西機場', drop:'所有購物',
+ motto:'最輕鬆的一天。不安排任何遠的景點，因為還要帶行李。',
+ tl:[
+  {t:'09:00', i:'☀️', b:'早餐、整理行李', p:'可以先請飯店寄放行李。'},
+  {t:'10:00', i:'🛍️', b:'心齋橋／難波最後採買', p:'藥妝、零食、抹茶、伴手禮、衣服，全部都在飯店附近。', tags:[['cut','可刪：所有購物']]},
+  {t:'12:00', i:'🍲', b:'午餐｜大衆すき焼き 北斗 GEMSなんば店', p:'壽喜燒，口味長輩好接受。', map:M('大衆すき焼き 北斗 GEMSなんば店')},
+  {t:'下午', i:'🧳', b:'回飯店拿行李', p:''},
+  {t:'出發', i:'🚄', b:'南海難波 → 關西機場（Rapi:t）', p:'全車對號座，帶著三個人的行李比一直轉地鐵舒服很多。', tags:[['go','南海 Rapi:t']]},
+  {t:'起飛 −3h', i:'✈️', b:'抵達關西機場', p:'國際線至少起飛前 3 小時到。'}
+ ],
+ food:[
+  {g:'鍋', c:'#8a3f2e', n:'大衆すき焼き 北斗 GEMSなんば店', s:'最後一餐，吃壽喜燒', link:M('大衆すき焼き 北斗 GEMSなんば店')},
+  {g:'菓', c:'#e8a35a', n:'吉壽屋零食', s:'伴手禮一次買齊', link:'https://maps.app.goo.gl/8Sk8QMqxTooHZFpe8?g_st=ic'}
+ ],
+ tips:['回程航班時間定了之後，從「起飛 −3 小時」往回推：Rapi:t 約 40 分鐘，再預留拿行李、走到車站的時間。','伴手禮如果太重，可以在機場或便利商店寄回台灣。']
+}
+];
+
+const RULES = [
+ ['飯店 → 難波站','🚶 走路'],['飯店 → 心齋橋','🚶 走路'],['大阪城站 → 天守閣','🚕 計程車'],['大阪城 → 午餐','🚕／🚇'],
+ ['梅田站 → 梅田藍天','🚶 慢慢走'],['梅田 → 難波','🚇 御堂筋線'],['三宮 → Harborland','🚕 計程車'],['難波 → 中之島','🚇 四橋線＋短程步行'],
+ ['中之島看燈','🚶 少量'],['難波 → 宇治','🚇＋京阪'],['宇治景點之間','🚶＋進茶店休息']
+];
+const CHECKS = [
+ ['r1','訂 12/14 19:00 燒肉力丸（3 人）','ぐるなび 可以線上訂'],
+ ['r2','決定 12/15 神戶午餐：神戶牛 or 邊走邊吃','選神戶牛就先訂位'],
+ ['r3','先在網路上買大阪城天守閣門票','現場常排隊'],
+ ['r4','買 12/18 南海 Rapi:t 車票','全車對號座'],
+ ['r5','確認回程航班時間','用來倒推最後一天'],
+ ['r6','決定 12/15、12/16、12/17 的晚餐','溫野菜／力丸／花丸軒／薩利亞／Life 超市'],
+ ['r7','做給長輩隨身帶的日文飯店地址卡','']
+];
+
+/* ============ RENDER ============ */
+const pic = (d,alt) => d.photo ? `<img src="${d.photo}" alt="${alt}" loading="lazy">` : null;
+const $ = s => document.querySelector(s);
+$('#nav').innerHTML = DAYS.map((d,i)=>`<a class="chip" href="#${d.id}" data-id="${d.id}"><b>D${i+1}</b>${d.date} ${d.dow}</a>`).join('')
+  + `<a class="chip" href="#checklist" data-id="checklist"><b>✓</b>待辦</a>`;
+
+$('#ov').innerHTML = DAYS.map((d,i)=>`
+ <a class="ovc" href="#${d.id}">
+  ${pic(d,d.title) || ART[d.art].replace(/id="(g\d|glow|pond|hall)"/g,'id="$1o"').replace(/url\(#(g\d|glow|pond)\)/g,'url(#$1o)').replace(/href="#hall"/g,'href="#hallo"')}
+  <div class="in"><div class="d">D${i+1}・${d.date} 週${d.dow}</div><div class="t">${d.title}</div>
+   <div class="row"><i>上午</i>${d.am}</div><div class="row"><i>下午</i>${d.pm}</div><div class="row"><i>晚上</i>${d.ev}</div>
+   <span class="drop">累了刪：${d.drop}</span></div>
+ </a>`).join('');
+
+const tagHtml = t => (t||[]).map(([k,v])=>`<span class="tag ${k}">${v}</span>`).join('');
+$('#days').innerHTML = DAYS.map((d,i)=>`
+<section class="day" id="${d.id}" data-date="2026-${d.date.replace('/','-')}">
+ <div class="dayhead">${pic(d,d.title) || ART[d.art]}
+  <div class="cap"><div class="num">DAY ${i+1} ・ ${d.date} 週${d.dow}<span class="today">今天</span></div><h3>${d.title}</h3></div>
+ </div>
+ <p class="motto">${d.motto}</p>
+ <ol class="tl">${d.tl.map(x=>`
+  <li><div class="time">${x.t}</div><div class="dot">${x.i}</div>
+   <div class="what"><b>${x.b}</b>${x.p?`<p>${x.p}</p>`:''}
+   ${(x.tags||x.map)?`<div class="meta">${tagHtml(x.tags)}${x.map?`<a class="maplink" href="${x.map}" target="_blank" rel="noopener">📍 地圖</a>`:''}</div>`:''}</div></li>`).join('')}
+ </ol>
+ <h4 class="sub-h">🍽️ 這天的美食</h4>
+ <div class="foods">${d.food.map(f=>`
+  <a class="food" href="${f.link}" target="_blank" rel="noopener">
+   <div class="glyph" style="background:${f.c}">${f.g}</div>
+   <div><b>${f.n}</b>${f.s?`<span>${f.s}</span>`:''}${f.h?`<span>🕒 ${f.h}</span>`:''}<em>開啟地圖看照片 →</em></div>
+  </a>`).join('')}
+ </div>
+ <div class="tips"><h4>💡 補充建議（查過網路資料和心得）</h4><ul>${d.tips.map(t=>`<li>${t}</li>`).join('')}</ul></div>
+ <div class="cutbox">🪫 <span><b>累了就刪：</b>${d.drop}</span></div>
+</section>`).join('');
+
+$('#rules').innerHTML = RULES.map(([a,b])=>`<div class="rule"><span>${a}</span><span>${b}</span></div>`).join('');
+
+let saved = {};
+try{ saved = JSON.parse(localStorage.getItem('osaka-checks')||'{}'); }catch(e){}
+$('#check').innerHTML = CHECKS.map(([id,t,s])=>`<li><label><input type="checkbox" data-k="${id}" ${saved[id]?'checked':''}><span>${t}${s?`<small>${s}</small>`:''}</span></label></li>`).join('');
+$('#check').addEventListener('change', e=>{
+  const k = e.target.dataset.k; if(!k) return; saved[k]=e.target.checked;
+  try{ localStorage.setItem('osaka-checks', JSON.stringify(saved)); }catch(err){}
+});
+
+
+/* today highlight */
+const pad=n=>String(n).padStart(2,'0'); const now=new Date();
+const todayStr = `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())}`;
+document.querySelectorAll('.day').forEach(s=>{ if(s.dataset.date===todayStr) s.classList.add('is-today'); });
+
+/* active chip */
+const chips=[...document.querySelectorAll('.chip')];
+const io=new IntersectionObserver(es=>{es.forEach(e=>{ if(e.isIntersecting){ chips.forEach(c=>c.classList.toggle('on',c.dataset.id===e.target.id)); const on=chips.find(c=>c.dataset.id===e.target.id); if(on) on.scrollIntoView({block:'nearest',inline:'center'}); } })},{rootMargin:'-45% 0px -50% 0px'});
+document.querySelectorAll('.day, #checklist').forEach(s=>io.observe(s));
+</script>
+</body>
+</html>
