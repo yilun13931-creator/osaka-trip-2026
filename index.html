@@ -278,6 +278,10 @@ body.locked{overflow:hidden}
 .ov.anim .ovc{animation:ovIn .45s cubic-bezier(.2,.7,.2,1) both; animation-delay:calc(var(--i,0) * 45ms)}
 @keyframes ovIn{from{opacity:0; transform:translateY(10px) scale(.97)}}
 @media (prefers-reduced-motion:reduce){.ov.anim .ovc{animation:none}}
+
+.ov:not(.compact) .ovc.dup{display:none}
+.ov.compact.marquee{scroll-snap-type:none;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 28px,#000 calc(100% - 36px),transparent); mask-image:linear-gradient(90deg,transparent,#000 28px,#000 calc(100% - 36px),transparent)}
 </style>
 </head>
 <body>
@@ -745,6 +749,7 @@ $('#ov').innerHTML = DAYS.map((d,i)=>`
    <div class="row"><i>上午</i>${d.am}</div><div class="row"><i>下午</i>${d.pm}</div><div class="row"><i>晚上</i>${d.ev}</div>
    <span class="drop">累了刪：${d.drop}</span></div>
  </a>`).join('');
+$('#ov').insertAdjacentHTML('beforeend', [...document.querySelectorAll('#ov .ovc')].map(a=>{const c=a.cloneNode(true); c.classList.add('dup'); c.setAttribute('aria-hidden','true'); c.setAttribute('tabindex','-1'); c.querySelectorAll('[id]').forEach(e=>e.id+='d'); return c.outerHTML;}).join(''));
 
 const tagHtml = t => (t||[]).map(([k,v])=>`<span class="tag ${k}">${v}</span>`).join('');
 $('#days').innerHTML = DAYS.map((d,i)=>`
@@ -1000,6 +1005,34 @@ function wxIcon(c){ if(c===0) return ['☀️','晴']; if(c<=2) return ['🌤️
   let open=false; try{ open=localStorage.getItem('osaka-ov')==='1'; }catch(e){}
   set(open,false);
   bt.onclick=()=>{ open=!open; set(open,true); try{ localStorage.setItem('osaka-ov',open?'1':'0'); }catch(e){} };
+})();
+
+/* overview marquee: slow auto-scroll, pauses when touched, loops seamlessly */
+(function(){
+  const ov=$('#ov'); if(!ov) return;
+  if(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches){ ov.querySelectorAll('.dup').forEach(e=>e.remove()); return; }
+  ov.classList.add('marquee');
+  const SPEED=26; let pos=0, last=0, pauseUntil=0, hover=false, visible=true;
+  const firstDup=()=>ov.querySelector('.dup'), first=()=>ov.querySelector('.ovc');
+  const pause=ms=>{ pauseUntil=performance.now()+ms; };
+  ['pointerdown','touchstart','touchmove','wheel'].forEach(ev=>ov.addEventListener(ev,()=>pause(4000),{passive:true}));
+  ov.addEventListener('mouseenter',()=>hover=true); ov.addEventListener('mouseleave',()=>{hover=false; pause(1500);});
+  ov.addEventListener('focusin',()=>pause(8000));
+  if('IntersectionObserver' in window) new IntersectionObserver(es=>{ visible=es[0].isIntersecting; }).observe(ov);
+  function frame(t){
+    const dt=last?Math.min((t-last)/1000,0.1):0; last=t;
+    const fd=firstDup(), f=first(), half=fd&&f?fd.offsetLeft-f.offsetLeft:0;
+    const running=ov.classList.contains('compact') && visible && !document.hidden && !hover && t>pauseUntil && half>0;
+    if(running){
+      pos+=SPEED*dt; if(pos>=half) pos-=half; if(pos<0) pos+=half;
+      ov.scrollLeft=pos;
+    } else {
+      pos=ov.scrollLeft;
+      if(half>0 && pos>=half && t>pauseUntil-3500){ pos-=half; ov.scrollLeft=pos; }   // keep within the first set after a manual swipe
+    }
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
 })();
 </script>
 </body>
