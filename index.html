@@ -165,6 +165,63 @@ footer ul{padding-left:18px; margin:6px 0 0}
 @media (prefers-reduced-motion:reduce){
   .dayhead,.dayhead img,.dayhead svg,.dayhead .cap>*,.rv,.divider:before,.divider:after,.divider span{opacity:1!important; transform:none!important; transition:none!important}
 }
+
+/* ---------- CLICKABLE TIMELINE + SHEET ---------- */
+.hint{font-size:13px; color:var(--muted); margin:10px 4px 0}
+.tl li{grid-template-columns:50px 26px 1fr 14px; cursor:pointer; border-radius:14px; margin:0 -8px; padding:9px 8px; transition:background .2s}
+.tl li:hover,.tl li:focus-visible{background:#fff8ea; outline:none}
+.tl li:active{background:#f6ecd8}
+.chev{color:#c9b897; font-size:22px; line-height:1; align-self:center}
+.tl li.now .dot{background:var(--gold); box-shadow:0 0 0 0 rgba(232,180,90,.7); animation:pulse 1.8s infinite}
+.tl li.now{background:#fff3da}
+.tl li.now .time:after{content:"現在"; display:block; font-size:11px; color:#9a6a12}
+.tl li.next .time:after{content:"下一站"; display:block; font-size:11px; color:var(--red)}
+@keyframes pulse{70%{box-shadow:0 0 0 10px rgba(232,180,90,0)}100%{box-shadow:0 0 0 0 rgba(232,180,90,0)}}
+.scrim{position:fixed; inset:0; background:rgba(14,16,34,.45); opacity:0; pointer-events:none; transition:opacity .3s; z-index:50}
+.scrim.open{opacity:1; pointer-events:auto}
+.sheet{position:fixed; left:0; right:0; bottom:0; z-index:51; background:var(--card); border-radius:24px 24px 0 0;
+  max-height:86vh; overflow:auto; transform:translateY(105%); transition:transform .38s cubic-bezier(.2,.8,.2,1);
+  box-shadow:0 -10px 40px rgba(0,0,0,.18); padding:10px 20px calc(24px + env(safe-area-inset-bottom))}
+.sheet.open{transform:none}
+@media (min-width:700px){.sheet{left:50%; right:auto; width:600px; margin-left:-300px; bottom:24px; border-radius:24px}}
+.grab{width:42px; height:5px; border-radius:3px; background:#ddd3bf; margin:2px auto 12px}
+.sh-close{position:absolute; right:14px; top:12px; width:34px; height:34px; border-radius:50%; border:0; background:#f1ead9; font-size:18px; cursor:pointer}
+.sh-top{display:flex; gap:12px; align-items:center; padding-right:40px}
+.sh-ic{flex:0 0 48px; height:48px; border-radius:14px; background:var(--night); display:grid; place-items:center; font-size:24px}
+.sh-when{font-size:13px; color:var(--muted)}
+.sh-title{font-family:"Noto Serif TC",serif; font-size:21px; line-height:1.35; margin:2px 0 0}
+.sh-body{margin:16px 0 0; font-size:16px; line-height:1.75}
+.sh-body .meta{margin:10px 0 0}
+.sh-rows{display:grid; gap:8px; margin-top:16px}
+.sh-row{display:flex; gap:10px; background:#f8f3e8; border-radius:12px; padding:10px 12px; font-size:15px}
+.sh-row b{white-space:nowrap}
+.sh-row.alt{background:#f6e9d8; color:#6d4520}
+.sh-btns{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:18px}
+.sh-btns a{display:flex; align-items:center; justify-content:center; gap:6px; text-decoration:none; border-radius:14px; padding:13px; font-weight:700; font-size:15px}
+.btn-nav{background:var(--night); color:#fff}
+.btn-map{background:#fff; border:1px solid var(--line)}
+.sh-btns a:only-child{grid-column:1/-1}
+.sh-nav{display:flex; justify-content:space-between; margin-top:14px}
+.sh-nav button{border:0; background:none; color:var(--muted); font-size:14px; padding:8px 4px; cursor:pointer}
+.sh-nav button:disabled{opacity:.3}
+body.locked{overflow:hidden}
+
+/* ---------- COUNTDOWN + NEXT BAR ---------- */
+.countdown{margin-top:22px; display:inline-flex; gap:10px; align-items:stretch; background:rgba(13,18,40,.55); backdrop-filter:blur(6px);
+  border:1px solid rgba(255,255,255,.2); border-radius:18px; padding:12px 16px}
+.countdown .lbl{font-size:13px; color:var(--gold-soft); align-self:center; margin-right:4px; line-height:1.4}
+.countdown .u{text-align:center; min-width:46px}
+.countdown .u b{display:block; font-family:"Noto Serif TC",serif; font-size:28px; line-height:1.1; color:#fff; font-variant-numeric:tabular-nums}
+.countdown .u small{font-size:11px; color:#c9c8da}
+.countdown .msg{font-size:15px}
+.nextbar{position:fixed; left:50%; bottom:calc(14px + env(safe-area-inset-bottom)); transform:translate(-50%,140%); z-index:40;
+  background:var(--night); color:#fff; border-radius:999px; padding:10px 16px 10px 12px; display:flex; gap:10px; align-items:center;
+  box-shadow:0 8px 28px rgba(0,0,0,.28); border:0; font:inherit; cursor:pointer; max-width:calc(100% - 24px); transition:transform .45s cubic-bezier(.2,.8,.2,1)}
+.nextbar.show{transform:translate(-50%,0)}
+.nextbar .pip{width:9px; height:9px; border-radius:50%; background:var(--gold); animation:pulse 1.8s infinite; flex:0 0 auto}
+.nextbar .tx{font-size:14px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; text-align:left}
+.nextbar .tx b{color:var(--gold)}
+@media (prefers-reduced-motion:reduce){.sheet,.nextbar,.scrim{transition:none}.tl li.now .dot,.nextbar .pip{animation:none}}
 </style>
 </head>
 <body>
@@ -179,6 +236,7 @@ footer ul{padding-left:18px; margin:6px 0 0}
       <span class="pill">🚗 全程租車自駕</span>
       <span class="pill">☕ 每天都留休息時間</span>
     </div>
+    <div class="countdown" id="cd" aria-live="polite"></div>
   </div>
 </header>
 
@@ -248,6 +306,12 @@ footer ul{padding-left:18px; margin:6px 0 0}
   </div>
 </footer>
 
+<div class="scrim" id="scrim"></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="shTitle">
+  <div class="grab"></div><button class="sh-close" id="shClose" aria-label="關閉">✕</button>
+  <div id="shContent"></div>
+</div>
+<button class="nextbar" id="nextbar" aria-live="polite"><span class="pip"></span><span class="tx" id="nextTx"></span><span>›</span></button>
 <script>
 /* ============ ILLUSTRATIONS (original, generic) ============ */
 const ART = {
@@ -526,6 +590,67 @@ const CHECKS = [
  ['r6','做給長輩隨身帶的日文飯店地址卡','']
 ];
 
+/* ============ DETAIL (shown in the bottom sheet) ============ */
+const HOTEL = '車停飯店（出發前在導航把飯店設成「住家」，回程一鍵就能回來）';
+const DETAIL = {
+day1:[
+ {d:'入境審查加領行李大約 1 小時。出關前讓長輩先上廁所、換上外套，一出機場就會冷。', stay:'約 1 小時'},
+ {d:'到租車公司櫃台出示：<b>駕照正本＋駕照日文譯本＋護照＋信用卡</b>。確認有加租 ETC 卡、導航可以切成中文。出發前先調好座椅和後照鏡，日本靠左行駛，第一段路慢慢開。', park:'飯店停車場（先跟飯店確認位置和費用）'},
+ {d:'Check-in 之後讓長輩先休息到 18:00。之後去道頓堀都用走的。', park:HOTEL},
+ {d:'全程約 20 分鐘，船上有日文導覽，會從九座橋下經過。報名櫃台在唐吉訶德道頓堀店 1 樓，現場買票，上船處就在店門口前。', stay:'20 分鐘', dest:'とんぼりリバークルーズ', mode:'walking', alt:'太累就改到 12/14 晚餐後再坐（平日 13:00–21:00 也有開）'},
+ {d:'三家都在道頓堀走路範圍內。鈍屋 24 小時營業，晚一點去也沒關係。12/14 晚上已經排了力丸，今晚建議吃薩利亞或鈍屋。', dest:'道頓堀', mode:'walking', alt:'長輩累了就外帶回飯店吃'}
+],
+day2:[
+ {d:'車程約 10–15 分鐘，早上車少。', dest:'大阪木津市場', park:'市場周邊有收費停車場，到了就近找'},
+ {d:'大約 150 家魚、肉、蔬果、乾貨店，市場裡也有食堂，可以吃海鮮丼當早午餐。8:30–10:30 開的店最多，13:00 就收了。', stay:'約 3–4 小時（含午餐）', alt:'逛累了就提早去大阪城，在天守閣附近找地方坐'},
+ {d:'從停車場走到天守閣還有一段路，慢慢走，中途有椅子就坐。<br>天守閣：買完票後有一段樓梯，可以請剪票口的工作人員帶你們搭專用電梯。', stay:'約 1 小時', dest:'大阪城天守閣', park:'大阪城公園內有收費停車場，停離天守閣最近的一個', alt:'腿痠就不進天守閣，在外面拍照就好'},
+ {d:'梅田路很複雜，建議車直接停到藍天大廈所在的新梅田City，在附近咖啡廳休息到 16:00 再上展望台，不一定要再走去 Grand Front。', dest:'梅田スカイビル', park:'新梅田City 停車場（藍天大廈旁），一次停好不要移車'},
+ {d:'坐著看大阪市景，16:48 左右日落，天黑後再看夜景。夕陽到夜景這段最擠，早點上去找位子。', stay:'約 2 小時', alt:'天氣不好看不到夕陽，就早點回難波休息'},
+ {d:'開回難波，把車停回飯店，之後都用走的。', park:HOTEL},
+ {d:'冰狗、吉壽屋零食都在這一帶。19:00 要吃飯，逛 30 分鐘就好。', dest:'アメリカ村 大阪', mode:'walking', alt:'直接回飯店休息到吃飯'},
+ {d:'兩家都是吃到飽 120 分鐘，要先訂位。網友說客滿時店員比較忙，點餐可以一次多點一點。', stay:'120 分鐘', dest:'焼肉力丸 なんば道頓堀店', mode:'walking', alt:'想吃清淡一點就改溫野菜涮涮鍋'}
+],
+day3:[
+ {d:'前一天比較累，今天睡晚一點沒關係。'},
+ {d:'車程約 50 分鐘。三宮和南京町走路約 10–15 分鐘，建議停在兩者中間（元町一帶）的收費停車場，下午就不用再移車。', dest:'南京町 神戸', park:'元町、南京町一帶的收費停車場'},
+ {d:'找咖啡廳坐 20–30 分鐘讓長輩休息。附近的明石燒 TACHIBANA 可以順路吃一點，三個人點 2 人份就好，留胃給午餐。', stay:'30–40 分鐘'},
+ {d:'南京町邊走邊吃：森谷商店的可樂餅、牛肉餅一定要試。想坐下來好好吃一餐，就去 Royal Mouriya 吃神戶牛排（建議先訂位）。', stay:'約 2 小時', dest:'南京町 神戸', mode:'walking', alt:'腳累就直接開車到 Harborland，在商場裡坐著吃'},
+ {d:'車程很短，但走路要 20–30 分鐘，不要讓長輩走。', dest:'umie 神戸', park:'umie 等商場附設的停車場'},
+ {d:'商場、廁所、咖啡廳都在室內。17:00 左右天黑，神戶塔和港邊開始點燈，最好看。', stay:'約 1 小時', alt:'累了就直接開回大阪'},
+ {d:'傍晚下班時間高速公路容易塞車。想避開的話，就在 Harborland 吃完晚餐，19:30 以後再出發，長輩也可以在車上休息。', park:HOTEL},
+ {d:'在神戶吃完再回來，或回難波吃溫野菜，也可以在飯店附近簡單吃。'}
+],
+day4:[
+ {d:'車程約 1 小時，早上可能遇到通勤車潮。', dest:'京都駅ビル駐車場', park:'京都車站大樓停車場（約 1,250 個車位，收費）'},
+ {d:'弟弟標的地點，可以用上方的「地圖」按鈕打開。慢慢逛，11:30 前到拉麵小路就好。'},
+ {d:'在京都車站大樓 10 樓，有好幾家各地拉麵，先在店門口的售票機點餐。12–14 點最擠，11:30 前到比較好。', stay:'約 1 小時', dest:'京都拉麺小路', mode:'walking'},
+ {d:'車程約 30–40 分鐘。', dest:'嵐山 渡月橋', park:'渡月橋沒有專用停車場，停附近的收費停車場再走過去'},
+ {d:'沿著桂川散步、看渡月橋，累了就找茶屋坐下來喝茶吃點心。12 月平日的人比賞楓季少很多。', stay:'約 1.5 小時', alt:'走不動就在渡月橋旁拍照，提早回大阪'},
+ {d:'車程約 1–1.5 小時，傍晚可能塞車。不用趕，公會堂的投影 21:30 才結束。', dest:'大阪市中央公会堂', park:'中之島一帶有收費停車場，導航到公會堂附近再找'},
+ {d:'先看大阪市役所正面的燈光投影，再走到旁邊的中央公會堂看光雕：一輪約 7 分鐘，每 12 分鐘播一次。市役所大廳可以當休息處。', stay:'約 1 小時', alt:'媽媽累了就只看市役所和公會堂，看完就走'},
+ {d:'約 150 公尺的燈光隧道，慢慢走一趟。', stay:'約 20 分鐘'},
+ {d:'開回難波，車停飯店後走去道頓堀吃。', park:HOTEL}
+],
+day5:[
+ {d:'開園時間每天不同，出發前一週看官網。早點到停車場，入園排隊比較短。', dest:'ユニバーサル・スタジオ・ジャパン 駐車場', park:'園區官方停車場（收費）'},
+ {at:'09:00', d:'先去最想玩的設施，早上排隊最短。有買快速通關券的話，照券上的時間去。'},
+ {at:'12:00', d:'在園內餐廳吃飯，讓長輩多坐一會兒。冬季有美食節，可以分著吃多一點口味。', stay:'約 1.5 小時'},
+ {at:'14:00', d:'聖誕裝飾、遊行和表演都有，長輩看表演比玩刺激的設施輕鬆。'},
+ {at:'17:00', d:'在紐約區上演約 30 分鐘的大型夜間秀。天黑後戶外很冷，圍巾、手套、暖暖包都要帶。', stay:'約 30 分鐘', alt:'太冷或太累就提早回飯店'},
+ {at:'20:00', d:'開回難波，晚餐在飯店附近簡單吃。', park:HOTEL}
+],
+day6:[
+ {d:'行李整理好，伴手禮集中放一袋。'},
+ {d:'退房後行李直接放上車。'},
+ {d:'車程約 50 分鐘，就在關西機場對岸。', dest:'りんくうプレミアム・アウトレット', park:'Outlet 停車場：¥400／小時；同一家店消費滿 ¥2,000 免費 3 小時'},
+ {d:'出示外國護照可以在服務台拿優惠券。這裡靠海，看得到飛機起降。<br><b>退稅新制度：</b>2026/11/1 起改成「先付含稅價、出境時再退稅」，結帳時記得說要辦退稅，並登記退款用的信用卡。', stay:'約 1 小時', alt:'不逛了就早點還車去機場'},
+ {d:'先加滿油（留收據），再開到租車公司還車，坐接駁車到機場，大約 30–45 分鐘。'},
+ {d:'<b>順序很重要：</b>先到「免稅手續機器」掃護照，讓海關確認免稅商品，<b>確認完才去國泰櫃台托運行李</b>。免稅商品不要先打包進托運行李。', stay:'約 2 小時', dest:'関西国際空港 第1ターミナル'},
+ {d:'18:30 抵達台北，平安回家 🏠'}
+]
+};
+DAYS.forEach(d=>d.tl.forEach((x,k)=>Object.assign(x,(DETAIL[d.id]||[])[k]||{})));
+
 /* ============ RENDER ============ */
 const pic = (d,alt) => d.photo ? `<img src="${d.photo}" alt="${alt}" loading="lazy" decoding="async">` : null;
 const $ = s => document.querySelector(s);
@@ -548,10 +673,11 @@ $('#days').innerHTML = DAYS.map((d,i)=>`
   <div class="cap"><div class="num">DAY ${i+1} ・ ${d.date} 週${d.dow}<span class="today">今天</span></div><h3>${d.title}</h3></div>
  </div>
  <p class="motto rv">${d.motto}</p>
+ <p class="hint rv">👆 點任何一個行程，看詳細說明和導航</p>
  <ol class="tl">${d.tl.map((x,k)=>`
-  <li class="rv" style="--i:${Math.min(k,6)}"><div class="time">${x.t}</div><div class="dot">${x.i}</div>
+  <li class="rv" style="--i:${Math.min(k,6)}" data-d="${i}" data-k="${k}" id="${d.id}-${k}" tabindex="0" role="button" aria-label="${x.t} ${x.b}，看詳細"><div class="time">${x.t}</div><div class="dot">${x.i}</div>
    <div class="what"><b>${x.b}</b>${x.p?`<p>${x.p}</p>`:''}
-   ${(x.tags||x.map)?`<div class="meta">${tagHtml(x.tags)}${x.map?`<a class="maplink" href="${x.map}" target="_blank" rel="noopener">📍 地圖</a>`:''}</div>`:''}</div></li>`).join('')}
+   ${(x.tags||x.map)?`<div class="meta">${tagHtml(x.tags)}${x.map?`<a class="maplink" href="${x.map}" target="_blank" rel="noopener">📍 地圖</a>`:''}</div>`:''}</div><span class="chev" aria-hidden="true">›</span></li>`).join('')}
  </ol>
  <h4 class="sub-h rv">🍽️ 這天的美食</h4>
  <div class="foods">${d.food.map((f,k)=>`
@@ -575,10 +701,74 @@ $('#check').addEventListener('change', e=>{
 });
 
 
-/* today highlight */
-const pad=n=>String(n).padStart(2,'0'); const now=new Date();
-const todayStr = `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())}`;
-document.querySelectorAll('.day').forEach(s=>{ if(s.dataset.date===todayStr) s.classList.add('is-today'); });
+/* ---------- detail sheet ---------- */
+const sheet=$('#sheet'), scrim=$('#scrim'); let cur=null, lastFocus=null;
+const navUrl=(q,m)=>'https://www.google.com/maps/dir/?api=1&destination='+encodeURIComponent(q)+'&travelmode='+(m||'driving');
+function openSheet(di,k){
+  const d=DAYS[di], x=d.tl[k]; cur=[di,k];
+  const rows=[];
+  if(x.stay) rows.push(`<div class="sh-row"><b>⏱ 停留</b><span>${x.stay}</span></div>`);
+  if(x.park) rows.push(`<div class="sh-row"><b>🅿️ 停車</b><span>${x.park}</span></div>`);
+  const nx=d.tl[k+1]; if(nx) rows.push(`<div class="sh-row"><b>➡️ 下一站</b><span>${nx.t}　${nx.b}</span></div>`);
+  if(x.alt) rows.push(`<div class="sh-row alt"><b>🪫 累了</b><span>${x.alt}</span></div>`);
+  const btns=[]; if(x.dest) btns.push(`<a class="btn-nav" href="${navUrl(x.dest,x.mode)}" target="_blank" rel="noopener">${x.mode==='walking'?'🚶 走路導航':'🚗 開始導航'}</a>`);
+  if(x.map) btns.push(`<a class="btn-map" href="${x.map}" target="_blank" rel="noopener">📍 看地圖和照片</a>`);
+  $('#shContent').innerHTML=`
+   <div class="sh-top"><div class="sh-ic">${x.i}</div><div><div class="sh-when">DAY ${di+1}・${d.date} 週${d.dow}・${x.t}</div><h3 class="sh-title" id="shTitle">${x.b}</h3></div></div>
+   <div class="sh-body">${x.d||x.p||''}${x.d&&x.p?`<p style="color:var(--muted);margin:10px 0 0">${x.p}</p>`:''}${x.tags?`<div class="meta">${tagHtml(x.tags)}</div>`:''}</div>
+   ${rows.length?`<div class="sh-rows">${rows.join('')}</div>`:''}
+   ${btns.length?`<div class="sh-btns">${btns.join('')}</div>`:''}
+   <div class="sh-nav"><button id="shPrev" ${k===0?'disabled':''}>‹ 上一個</button><button id="shNext" ${k===d.tl.length-1?'disabled':''}>下一個 ›</button></div>`;
+  $('#shPrev').onclick=()=>openSheet(di,k-1); $('#shNext').onclick=()=>openSheet(di,k+1);
+  if(!sheet.classList.contains('open')){ lastFocus=document.activeElement; }
+  sheet.scrollTop=0; sheet.classList.add('open'); scrim.classList.add('open'); document.body.classList.add('locked');
+  $('#shClose').focus({preventScroll:true});
+}
+function closeSheet(){ sheet.classList.remove('open'); scrim.classList.remove('open'); document.body.classList.remove('locked'); cur=null; if(lastFocus) lastFocus.focus({preventScroll:true}); }
+document.addEventListener('click',e=>{
+  if(e.target.closest('a')) return;
+  const li=e.target.closest('.tl li'); if(li) openSheet(+li.dataset.d,+li.dataset.k);
+});
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'&&cur) closeSheet();
+  if((e.key==='Enter'||e.key===' ')&&e.target.matches('.tl li')){ e.preventDefault(); openSheet(+e.target.dataset.d,+e.target.dataset.k); }
+});
+scrim.onclick=closeSheet; $('#shClose').onclick=closeSheet;
+let ty=null; sheet.addEventListener('touchstart',e=>{ ty=sheet.scrollTop<=0?e.touches[0].clientY:null },{passive:true});
+sheet.addEventListener('touchmove',e=>{ if(ty!==null && e.touches[0].clientY-ty>90){ ty=null; closeSheet(); } },{passive:true});
+
+/* ---------- countdown + now / next (Japan time) ---------- */
+const DEPART=Date.UTC(2026,11,13,3,15);            // 12/13 11:15 台北
+const RETURN=Date.UTC(2026,11,18,9,30);            // 12/18 18:30 台北
+const pad=n=>String(n).padStart(2,'0');
+const toMin=s=>{const m=/^(\d{1,2}):(\d{2})$/.exec(s||''); return m? +m[1]*60+ +m[2] : null;};
+function tick(){
+  const now=Date.now(), cd=$('#cd');
+  if(now<DEPART){
+    let s=Math.floor((DEPART-now)/1000); const dd=Math.floor(s/86400); s%=86400; const hh=Math.floor(s/3600); const mm=Math.floor(s%3600/60);
+    cd.innerHTML=`<span class="lbl">距離出發<br>還有</span><div class="u"><b>${dd}</b><small>天</small></div><div class="u"><b>${pad(hh)}</b><small>小時</small></div><div class="u"><b>${pad(mm)}</b><small>分</small></div>`;
+  } else if(now<RETURN){ cd.innerHTML=`<span class="msg">✈️ 旅行中・祝玩得開心！</span>`; }
+  else { cd.innerHTML=`<span class="msg">🏠 旅程結束，平安回家</span>`; }
+
+  const j=new Date(now+9*3600e3), today=`2026-${pad(j.getUTCMonth()+1)}-${pad(j.getUTCDate())}`, nowMin=j.getUTCHours()*60+j.getUTCMinutes();
+  document.querySelectorAll('.day').forEach(s=>s.classList.toggle('is-today', s.dataset.date===today && j.getUTCFullYear()===2026));
+  document.querySelectorAll('.tl li.now,.tl li.next').forEach(li=>li.classList.remove('now','next'));
+  const di=DAYS.findIndex(d=>`2026-${d.date.replace('/','-')}`===today && j.getUTCFullYear()===2026);
+  const bar=$('#nextbar');
+  if(di<0){ bar.classList.remove('show'); return; }
+  const tl=DAYS[di].tl, mins=tl.map(x=>toMin(x.at||x.t));
+  let c=-1; mins.forEach((m,k)=>{ if(m!==null && m<=nowMin) c=k; });
+  let n=mins.findIndex((m,k)=>k>c && m!==null && m>nowMin);
+  if(c>=0) document.getElementById(`${DAYS[di].id}-${c}`).classList.add('now');
+  if(n>=0){
+    document.getElementById(`${DAYS[di].id}-${n}`).classList.add('next');
+    const left=mins[n]-nowMin, lt=left>=60?`${Math.floor(left/60)} 小時 ${left%60} 分`:`${left} 分鐘`;
+    $('#nextTx').innerHTML=`<b>下一站 ${tl[n].t}</b>　${tl[n].b}・還有 ${lt}`;
+    bar.dataset.d=di; bar.dataset.k=n; bar.classList.add('show');
+  } else { bar.classList.remove('show'); }
+}
+$('#nextbar').onclick=function(){ const di=+this.dataset.d,k=+this.dataset.k; document.getElementById(`${DAYS[di].id}-${k}`).scrollIntoView({block:'center'}); openSheet(di,k); };
+tick(); setInterval(tick,30000);
 
 /* active chip */
 const chips=[...document.querySelectorAll('.chip')];
