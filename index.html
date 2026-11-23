@@ -243,6 +243,18 @@ body.locked{overflow:hidden}
 .sh-attr:empty{display:none}
 .sh-attr a{color:#fff}
 .sheet .sh-close{z-index:2; background:rgba(241,234,217,.92)}
+
+.ginfo{display:flex; flex-wrap:wrap; gap:2px 8px; margin-top:4px; font-size:12px; color:#5d584f}
+.ginfo:empty{display:none}
+.ginfo .star{color:#b07a12; font-weight:700}
+.ginfo .warn{color:var(--red)}
+.ginfo b{font-weight:700}
+.wx{position:absolute; top:12px; right:12px; display:flex; align-items:center; gap:8px; flex-wrap:wrap; justify-content:flex-end; max-width:70%;
+  background:rgba(13,18,40,.55); backdrop-filter:blur(6px); color:#fff; border:1px solid rgba(255,255,255,.22); border-radius:14px; padding:6px 10px; font-size:13px}
+.wx .wi{font-size:20px; line-height:1}
+.wx b{font-size:16px}
+.wx em{font-style:normal; font-size:11px; color:#d9d6e6; width:100%; text-align:right; margin-top:-2px}
+.ovwx{font-size:13px; color:var(--sea); margin-top:2px}
 </style>
 </head>
 <body>
@@ -726,7 +738,7 @@ $('#days').innerHTML = DAYS.map((d,i)=>`
  <div class="foods">${d.food.map((f,k)=>`
   <div class="food rv" style="--i:${Math.min(k,4)}" data-q="${FQ[f.link]||''}">
    <div class="glyph" style="background:${f.c}"><span>${f.g}</span></div>
-   <div class="ftx"><b>${f.n}</b>${f.s?`<span>${f.s}</span>`:''}${f.h?`<span>🕒 ${f.h}</span>`:''}<a class="flink" href="${f.link}" target="_blank" rel="noopener">開啟地圖看更多 →</a><small class="attr"></small></div>
+   <div class="ftx"><b>${f.n}</b>${f.s?`<span>${f.s}</span>`:''}${f.h?`<span>🕒 ${f.h}</span>`:''}<div class="ginfo"></div><a class="flink" href="${f.link}" target="_blank" rel="noopener">開啟地圖看更多 →</a><small class="attr"></small></div>
   </div>`).join('')}
  </div>
  <p class="gsrc rv">照片來源：Google 地圖（照片下方標示拍攝者）</p>
@@ -778,8 +790,17 @@ function openSheet(di,k){
   if(pqk){ const want=`${di}-${k}`; placePhoto(pqk,800).then(r=>{
     const box=$('#shPhoto'); if(!box || !cur || `${cur[0]}-${cur[1]}`!==want) return;
     if(!r){ box.remove(); return; }
-    const img=new Image(); img.onload=()=>{ box.style.backgroundImage=`url("${r.url}")`; box.classList.remove('loading'); };
-    img.onerror=()=>box.remove(); img.src=r.url;
+    if(r.url){ const img=new Image(); img.onload=()=>{ box.style.backgroundImage=`url("${r.url}")`; box.classList.remove('loading'); };
+      img.onerror=()=>box.remove(); img.src=r.url; } else box.remove();
+    const info=placeInfo(r.pl,`2026-${d.date.replace('/','-')}`), rows=$('#shContent .sh-rows');
+    liveStatus(r.pl,`2026-${d.date.replace('/','-')}`).then(live=>{
+      if(!cur || `${cur[0]}-${cur[1]}`!==want) return;
+      const add=[info.status&&`<div class="sh-row alt"><b>⚠️ 注意</b><span>${info.status.replace('⚠️ ','')}</span></div>`,
+        live&&`<div class="sh-row"><b>📍 現在</b><span>${live}</span></div>`,
+        info.hours&&`<div class="sh-row"><b>🕒 營業</b><span>${info.hours}</span></div>`,
+        info.rating&&`<div class="sh-row"><b>⭐ 評分</b><span>Google ${info.rating.replace('★ ','')}</span></div>`].filter(Boolean).join('');
+      if(add){ if(rows) rows.insertAdjacentHTML('afterbegin',add); else $('#shContent .sh-body').insertAdjacentHTML('afterend',`<div class="sh-rows">${add}</div>`); }
+    });
     if(r.who) $('#shAttr').innerHTML=`📷 ${r.whoUrl?`<a href="${r.whoUrl}" target="_blank" rel="noopener">${r.who}</a>`:r.who}・Google 地圖`;
   }); }
   if(!sheet.classList.contains('open')){ lastFocus=document.activeElement; }
@@ -861,29 +882,80 @@ async function placePhoto(q,size){
   if(!gCache[q]) gCache[q]=(async()=>{
     await loadGoogle();
     const {Place}=await google.maps.importLibrary('places');
-    const {places}=await Place.searchByText({textQuery:q, fields:['displayName','photos'], maxResultCount:1,
+    const {places}=await Place.searchByText({textQuery:q, fields:['displayName','photos','rating','userRatingCount','regularOpeningHours','utcOffsetMinutes','businessStatus'], maxResultCount:1,
       locationBias:{center:{lat:34.67,lng:135.50}, radius:50000}});
-    const pl=places&&places[0], ph=pl&&pl.photos&&pl.photos[0];
-    if(!ph) return null;
-    const a=(ph.authorAttributions||[])[0]||{};
-    return {ph, who:a.displayName||'', whoUrl:a.uri||'', name:pl.displayName||''};
+    const pl=places&&places[0]; if(!pl) return null; const ph=pl.photos&&pl.photos[0];
+    const a=ph?((ph.authorAttributions||[])[0]||{}):{};
+    return {pl, ph, who:a.displayName||'', whoUrl:a.uri||'', name:pl.displayName||''};
   })().catch(()=>null);
   const r=await gCache[q]; if(!r) return null;
-  return Object.assign({url:r.ph.getURI({maxWidth:size,maxHeight:size})}, r);
+  return Object.assign({url:r.ph?r.ph.getURI({maxWidth:size,maxHeight:size}):null}, r);
+}
+
+const WK=['日','一','二','三','四','五','六'];
+const jstToday=()=>{const j=new Date(Date.now()+9*3600e3); return `${j.getUTCFullYear()}-${String(j.getUTCMonth()+1).padStart(2,'0')}-${String(j.getUTCDate()).padStart(2,'0')}`;};
+function placeInfo(pl, dateStr){
+  const out={rating:'', hours:'', status:''};
+  if(!pl) return out;
+  if(pl.rating) out.rating=`★ ${pl.rating.toFixed(1)}${pl.userRatingCount?`（${pl.userRatingCount.toLocaleString()}）`:''}`;
+  if(pl.businessStatus==='CLOSED_PERMANENTLY') out.status='⚠️ Google 顯示已歇業';
+  else if(pl.businessStatus==='CLOSED_TEMPORARILY') out.status='⚠️ Google 顯示暫停營業';
+  const wd=pl.regularOpeningHours&&pl.regularOpeningHours.weekdayDescriptions;
+  if(wd&&dateStr){
+    const dt=new Date(dateStr+'T12:00:00+09:00'), js=dt.getUTCDay(), idx=(js+6)%7;
+    const line=(wd[idx]||'').replace(/^[^:：]*[:：]\s*/,'');
+    if(line) out.hours=`${dateStr.slice(5).replace('-','/')} 週${WK[js]}：${line}`;
+  }
+  return out;
+}
+async function liveStatus(pl, dateStr){
+  if(!pl || dateStr!==jstToday() || !pl.regularOpeningHours) return '';
+  try{ const o=await pl.isOpen(); return o===true?'🟢 現在營業中':o===false?'🔴 現在休息中':''; }catch(e){ return ''; }
 }
 const photoIO=('IntersectionObserver' in window)? new IntersectionObserver(es=>es.forEach(async e=>{
   if(!e.isIntersecting) return; photoIO.unobserve(e.target);
   const card=e.target, q=card.dataset.q, g=card.querySelector('.glyph'); if(!q) return;
   g.classList.add('loading'); const r=await placePhoto(q); g.classList.remove('loading');
   if(!r) return;
-  const img=new Image(); img.onload=()=>{ g.style.backgroundImage=`url("${r.url}")`; g.classList.add('has-photo'); };
-  img.src=r.url;
+  if(r.url){ const img=new Image(); img.onload=()=>{ g.style.backgroundImage=`url("${r.url}")`; g.classList.add('has-photo'); }; img.src=r.url; }
+  const dStr=card.closest('.day').dataset.date, info=placeInfo(r.pl,dStr), gi=card.querySelector('.ginfo');
+  const live=await liveStatus(r.pl,dStr);
+  gi.innerHTML=[info.status&&`<b class="warn">${info.status}</b>`, live&&`<b>${live}</b>`, info.rating&&`<span class="star">${info.rating}</span>`, info.hours&&`<span>🕒 ${info.hours}</span>`].filter(Boolean).join('');
   const at=card.querySelector('.attr');
   if(r.who) at.innerHTML=`📷 ${r.whoUrl?`<a href="${r.whoUrl}" target="_blank" rel="noopener">${r.who}</a>`:r.who}`;
   if(r.name) card.title='Google 地圖：'+r.name;
 }),{rootMargin:'200px 0px'}) : null;
 if(photoIO) document.querySelectorAll('.food[data-q]').forEach(c=>{ if(c.dataset.q) photoIO.observe(c); });
 document.addEventListener('click',e=>{ const c=e.target.closest('.food'); if(c && !e.target.closest('a')) c.querySelector('.flink').click(); });
+
+/* ---------- weather forecast (Open-Meteo, up to 16 days ahead) ---------- */
+const WX_LOC={day1:0,day2:0,day3:1,day4:2,day5:0,day6:0};   // 0 大阪 1 神戶 2 京都
+const WX_NAME=['大阪','神戶','京都'];
+function wxIcon(c){ if(c===0) return ['☀️','晴']; if(c<=2) return ['🌤️','晴時多雲']; if(c===3) return ['☁️','陰'];
+  if(c===45||c===48) return ['🌫️','霧']; if(c>=51&&c<=57) return ['🌦️','毛毛雨']; if(c>=61&&c<=67) return ['🌧️','雨'];
+  if(c>=71&&c<=77) return ['🌨️','雪']; if(c>=80&&c<=82) return ['🌦️','陣雨']; if(c>=85&&c<=86) return ['🌨️','陣雪']; if(c>=95) return ['⛈️','雷雨']; return ['🌡️',''];}
+(async()=>{
+  let data;
+  try{
+    const res=await fetch('https://api.open-meteo.com/v1/forecast?latitude=34.67,34.69,35.01&longitude=135.50,135.19,135.68&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=Asia%2FTokyo&forecast_days=16');
+    if(!res.ok) throw 0; data=await res.json(); if(!Array.isArray(data)) data=[data];
+  }catch(e){ data=null; }
+  DAYS.forEach((d,i)=>{
+    const iso=`2026-${d.date.replace('/','-')}`, loc=WX_LOC[d.id]||0, w=data&&data[loc]&&data[loc].daily;
+    const k=w?w.time.indexOf(iso):-1;
+    let html, small;
+    if(k>=0){
+      const [ic,txt]=wxIcon(w.weather_code[k]), hi=Math.round(w.temperature_2m_max[k]), lo=Math.round(w.temperature_2m_min[k]), pr=w.precipitation_probability_max[k];
+      html=`<span class="wi">${ic}</span><span><b>${hi}°</b> / ${lo}°</span>${pr!=null?`<span>☔ ${pr}%</span>`:''}<em>${WX_NAME[loc]}・${txt}</em>`;
+      small=`${ic} ${hi}° / ${lo}°${pr!=null?`・☔${pr}%`:''}`;
+    } else {
+      html=`<span class="wi">🌡️</span><span>往年約 <b>5–12°</b></span><em>預報約出發前兩週出現</em>`;
+      small='';
+    }
+    const head=document.querySelector(`#${d.id} .dayhead`); if(head){ const b=document.createElement('div'); b.className='wx'; b.innerHTML=html; head.appendChild(b); }
+    const ov=document.querySelectorAll('.ovc')[i]; if(ov&&small){ const s2=document.createElement('div'); s2.className='ovwx'; s2.textContent=small; ov.querySelector('.in').insertBefore(s2, ov.querySelector('.t')); }
+  });
+})();
 </script>
 </body>
 </html>
