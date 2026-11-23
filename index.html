@@ -89,7 +89,7 @@ section{padding:38px 0 8px}
 .ovc img{display:block; width:100%; height:92px; object-fit:cover}
 .dayhead .cap{position:absolute; left:0; right:0; bottom:0; padding:60px 20px 18px;
   background:linear-gradient(transparent, rgba(10,12,30,.82))}
-.dayhead .num{font-size:13px; letter-spacing:.25em; color:var(--gold-soft)}
+.dayhead .num{font-size:14px; letter-spacing:.12em; color:var(--gold-soft)}
 .dayhead h3{font-family:"Noto Serif TC",serif; font-size:clamp(22px,6vw,32px); margin:2px 0 0; line-height:1.25}
 .today{display:none; margin-left:8px; background:var(--gold); color:var(--night); font-size:12px; font-weight:700; padding:2px 8px; border-radius:6px; vertical-align:middle; letter-spacing:0}
 .is-today .today{display:inline-block}
@@ -145,7 +145,7 @@ footer h5{color:#fff; font-size:15px; margin:0 0 8px}
 footer ul{padding-left:18px; margin:6px 0 0}
 
 /* ---------- DAY TRANSITIONS ---------- */
-.divider{display:flex; align-items:center; gap:14px; margin:54px 0 0; color:var(--muted); font-size:13px; letter-spacing:.3em}
+.divider{display:flex; align-items:center; gap:14px; margin:54px 0 0; color:var(--muted); font-size:14px; letter-spacing:.15em}
 .divider:before,.divider:after{content:""; flex:1; height:1px; background:linear-gradient(90deg,transparent,var(--gold),transparent);
   transform:scaleX(0); transition:transform 1.1s cubic-bezier(.2,.7,.2,1)}
 .divider span{opacity:0; transform:translateY(6px); transition:opacity .6s .35s, transform .6s .35s; white-space:nowrap}
@@ -652,25 +652,26 @@ day6:[
 DAYS.forEach(d=>d.tl.forEach((x,k)=>Object.assign(x,(DETAIL[d.id]||[])[k]||{})));
 
 /* ============ RENDER ============ */
+const CN=['第一天','第二天','第三天','第四天','第五天','第六天'];
 const pic = (d,alt) => d.photo ? `<img src="${d.photo}" alt="${alt}" loading="lazy" decoding="async">` : null;
 const $ = s => document.querySelector(s);
-$('#nav').innerHTML = DAYS.map((d,i)=>`<a class="chip" href="#${d.id}" data-id="${d.id}"><b>D${i+1}</b>${d.date} ${d.dow}</a>`).join('')
-  + `<a class="chip" href="#checklist" data-id="checklist"><b>✓</b>待辦</a>`;
+$('#nav').innerHTML = DAYS.map((d,i)=>`<a class="chip" href="#${d.id}" data-id="${d.id}"><b>${CN[i]}</b>${d.date} 週${d.dow}</a>`).join('')
+  + `<a class="chip" href="#checklist" data-id="checklist"><b>✓ 待辦</b>清單</a>`;
 
 $('#ov').innerHTML = DAYS.map((d,i)=>`
  <a class="ovc" href="#${d.id}">
   ${pic(d,d.title) || ART[d.art].replace(/id="(g\d|glow|pond|hall)"/g,'id="$1o"').replace(/url\(#(g\d|glow|pond)\)/g,'url(#$1o)').replace(/href="#hall"/g,'href="#hallo"')}
-  <div class="in"><div class="d">D${i+1}・${d.date} 週${d.dow}</div><div class="t">${d.title}</div>
+  <div class="in"><div class="d">${CN[i]}・${d.date} 週${d.dow}</div><div class="t">${d.title}</div>
    <div class="row"><i>上午</i>${d.am}</div><div class="row"><i>下午</i>${d.pm}</div><div class="row"><i>晚上</i>${d.ev}</div>
    <span class="drop">累了刪：${d.drop}</span></div>
  </a>`).join('');
 
 const tagHtml = t => (t||[]).map(([k,v])=>`<span class="tag ${k}">${v}</span>`).join('');
 $('#days').innerHTML = DAYS.map((d,i)=>`
-<div class="divider"><span>DAY ${i+1}<i>✦</i>${d.date}</span></div>
+<div class="divider"><span>${CN[i]}<i>✦</i>${d.date}</span></div>
 <section class="day" id="${d.id}" data-date="2026-${d.date.replace('/','-')}">
  <div class="dayhead">${pic(d,d.title) || ART[d.art]}
-  <div class="cap"><div class="num">DAY ${i+1} ・ ${d.date} 週${d.dow}<span class="today">今天</span></div><h3>${d.title}</h3></div>
+  <div class="cap"><div class="num">${CN[i]}・${d.date} 週${d.dow}<span class="today">今天</span></div><h3>${d.title}</h3></div>
  </div>
  <p class="motto rv">${d.motto}</p>
  <p class="hint rv">👆 點任何一個行程，看詳細說明和導航</p>
@@ -714,7 +715,7 @@ function openSheet(di,k){
   const btns=[]; if(x.dest) btns.push(`<a class="btn-nav" href="${navUrl(x.dest,x.mode)}" target="_blank" rel="noopener">${x.mode==='walking'?'🚶 走路導航':'🚗 開始導航'}</a>`);
   if(x.map) btns.push(`<a class="btn-map" href="${x.map}" target="_blank" rel="noopener">📍 看地圖和照片</a>`);
   $('#shContent').innerHTML=`
-   <div class="sh-top"><div class="sh-ic">${x.i}</div><div><div class="sh-when">DAY ${di+1}・${d.date} 週${d.dow}・${x.t}</div><h3 class="sh-title" id="shTitle">${x.b}</h3></div></div>
+   <div class="sh-top"><div class="sh-ic">${x.i}</div><div><div class="sh-when">${CN[di]}・${d.date} 週${d.dow}・${x.t}</div><h3 class="sh-title" id="shTitle">${x.b}</h3></div></div>
    <div class="sh-body">${x.d||x.p||''}${x.d&&x.p?`<p style="color:var(--muted);margin:10px 0 0">${x.p}</p>`:''}${x.tags?`<div class="meta">${tagHtml(x.tags)}</div>`:''}</div>
    ${rows.length?`<div class="sh-rows">${rows.join('')}</div>`:''}
    ${btns.length?`<div class="sh-btns">${btns.join('')}</div>`:''}
