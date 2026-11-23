@@ -222,6 +222,20 @@ body.locked{overflow:hidden}
 .nextbar .tx{font-size:14px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; text-align:left}
 .nextbar .tx b{color:var(--gold)}
 @media (prefers-reduced-motion:reduce){.sheet,.nextbar,.scrim{transition:none}.tl li.now .dot,.nextbar .pip{animation:none}}
+
+/* ---------- GOOGLE PLACE PHOTOS ---------- */
+.food{cursor:pointer}
+.ftx{min-width:0}
+.glyph{position:relative; overflow:hidden; background-size:cover!important; background-position:center!important}
+.glyph.has-photo span{opacity:0}
+.glyph.has-photo{flex-basis:76px; height:76px}
+.glyph:after{content:""; position:absolute; inset:0; background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.35) 50%,transparent 70%); transform:translateX(-100%)}
+.glyph.loading:after{animation:shimmer 1.2s infinite}
+@keyframes shimmer{to{transform:translateX(100%)}}
+.flink{display:inline-block; margin-top:4px; font-size:12px; color:var(--sea); text-decoration:none}
+.attr{display:block; font-size:11px; color:#9a948a; margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.attr a{color:inherit}
+.gsrc{font-size:12px; color:var(--muted); margin:8px 2px 0}
 </style>
 </head>
 <body>
@@ -520,7 +534,7 @@ const DAYS = [
  motto:'白天去京都，晚上回大阪看燈。光雕投影會播到 21:30，傍晚不用趕。',
  tl:[
   {t:'09:30', i:'🚗', b:'飯店 → 京都車站', p:'車程約 1 小時，停在京都車站大樓的停車場。', tags:[['go','自駕']]},
-  {t:'10:30', i:'🏯', b:'京都車站周邊景點', p:'弟弟標的地點，慢慢逛。', map:'https://maps.app.goo.gl/wmj8Kp1bD6iQKxen8?g_st=ic'},
+  {t:'10:30', i:'🏯', b:'京都車站周邊逛逛', p:'京都塔、車站大樓的大階梯和空中步道都在旁邊，慢慢逛。', map:M('京都駅')},
   {t:'11:30', i:'🍜', b:'京都拉麵小路（午餐）', p:'在京都車站大樓 10 樓，好幾家拉麵店集中在一起，各自挑喜歡的口味。', tags:[['','11:00–22:00'],['new','12–14 點最擠，11:30 前到比較好']], map:'https://maps.app.goo.gl/Namxnvv4YgGfGoWc8?g_st=ic'},
   {t:'13:30', i:'🚗', b:'京都車站 → 嵐山', p:'車程約 30–40 分鐘。'},
   {t:'14:15', i:'🌉', b:'嵐山・渡月橋', p:'沿著桂川散步、看渡月橋，累了就找茶屋坐。', map:'https://maps.app.goo.gl/YuBWEQ99ZMkVuso46?g_st=ic'},
@@ -622,7 +636,7 @@ day3:[
 ],
 day4:[
  {d:'車程約 1 小時，早上可能遇到通勤車潮。', dest:'京都駅ビル駐車場', park:'京都車站大樓停車場（約 1,250 個車位，收費）'},
- {d:'弟弟標的地點，可以用上方的「地圖」按鈕打開。慢慢逛，11:30 前到拉麵小路就好。'},
+ {d:'弟弟原本的地圖連結標的是「京都市」，沒有指定景點。京都車站周邊有京都塔、車站大樓的大階梯和空中步道，逛完 11:30 前到拉麵小路就好。'},
  {d:'在京都車站大樓 10 樓，有好幾家各地拉麵，先在店門口的售票機點餐。12–14 點最擠，11:30 前到比較好。', stay:'約 1 小時', dest:'京都拉麺小路', mode:'walking'},
  {d:'車程約 30–40 分鐘。', dest:'嵐山 渡月橋', park:'渡月橋沒有專用停車場，停附近的收費停車場再走過去'},
  {d:'沿著桂川散步、看渡月橋，累了就找茶屋坐下來喝茶吃點心。12 月平日的人比賞楓季少很多。', stay:'約 1.5 小時', alt:'走不動就在渡月橋旁拍照，提早回大阪'},
@@ -651,6 +665,27 @@ day6:[
 };
 DAYS.forEach(d=>d.tl.forEach((x,k)=>Object.assign(x,(DETAIL[d.id]||[])[k]||{})));
 
+
+/* Google Maps place names, confirmed from each shared map link */
+const FQ = {
+ 'https://maps.app.goo.gl/Uy4GVR6CWxUtDM897?g_st=ic':'焼肉力丸 難波道頓堀店 道頓堀1-9-1',
+ 'https://maps.app.goo.gl/VgzsuYdq5Lenezdv5?g_st=ic':'サイゼリヤ 心斎橋GATE店',
+ 'https://maps.app.goo.gl/hgg8emQJkbfarrKy8?g_st=ic':'鈍屋拉麵 心齋橋店',
+ 'https://maps.app.goo.gl/pig3HSn1NZNvKb2G6?g_st=ic':'木津市場 大阪市浪速区敷津東2-2-8',
+ 'https://maps.app.goo.gl/wygmJS9kZa1G9jfU8?g_st=ic':'belle-ville pancake cafe ホワイティうめだ店',
+ 'https://maps.app.goo.gl/gnUzpVEsj68bEJPH6?g_st=ic':'しゃぶしゃぶ温野菜 道頓堀 宗右衛門町7-6',
+ 'https://maps.app.goo.gl/tuhPqQdwcPtBjuw96?g_st=ic':'元祖Ice Dog 大阪 心斎橋',
+ 'https://maps.app.goo.gl/GD2d2xSEhk9qCDBC6?g_st=ic':'MUGEN Ramen Shinsaibashi Store',
+ 'https://maps.app.goo.gl/8Sk8QMqxTooHZFpe8?g_st=ic':'吉壽屋 心斎橋筋商店街 南船場3-10-1',
+ 'https://maps.app.goo.gl/xsiNxPDiCMKtJnVcA?g_st=ic':'Kobe Beef Steak Restaurant Royal Mouriya 北長狭通1-9-9',
+ 'https://maps.app.goo.gl/SmkJmRh2FBxBYk1C9?g_st=ic':'Takoyaki Tachibana さんプラザ 神戸三宮町1-8-1',
+ 'https://maps.app.goo.gl/BJwam7uTmQeBpKyf6?g_st=ic':'本神戸肉森谷商店 元町通1-7-2',
+ 'https://maps.app.goo.gl/kfJUh6FE2VvuJFHn8?g_st=ic':'Flower Bakery 神戸 中山手通1-22-2',
+ 'https://maps.app.goo.gl/5sioqP29B6FetY37A?g_st=ic':'スターバックス 神戸北野異人館店',
+ 'https://maps.app.goo.gl/Namxnvv4YgGfGoWc8?g_st=ic':'京都拉麺小路',
+ 'https://maps.app.goo.gl/LjVqmb6Q84hnoFzL6?g_st=ic':'りんくうプレミアム・アウトレット'
+};
+FQ[M('ユニバーサル・スタジオ・ジャパン')]='ユニバーサル・スタジオ・ジャパン';
 /* ============ RENDER ============ */
 const CN=['第一天','第二天','第三天','第四天','第五天','第六天'];
 const pic = (d,alt) => d.photo ? `<img src="${d.photo}" alt="${alt}" loading="lazy" decoding="async">` : null;
@@ -682,11 +717,12 @@ $('#days').innerHTML = DAYS.map((d,i)=>`
  </ol>
  <h4 class="sub-h rv">🍽️ 這天的美食</h4>
  <div class="foods">${d.food.map((f,k)=>`
-  <a class="food rv" style="--i:${Math.min(k,4)}" href="${f.link}" target="_blank" rel="noopener">
-   <div class="glyph" style="background:${f.c}">${f.g}</div>
-   <div><b>${f.n}</b>${f.s?`<span>${f.s}</span>`:''}${f.h?`<span>🕒 ${f.h}</span>`:''}<em>開啟地圖看照片 →</em></div>
-  </a>`).join('')}
+  <div class="food rv" style="--i:${Math.min(k,4)}" data-q="${FQ[f.link]||''}">
+   <div class="glyph" style="background:${f.c}"><span>${f.g}</span></div>
+   <div class="ftx"><b>${f.n}</b>${f.s?`<span>${f.s}</span>`:''}${f.h?`<span>🕒 ${f.h}</span>`:''}<a class="flink" href="${f.link}" target="_blank" rel="noopener">開啟地圖看更多 →</a><small class="attr"></small></div>
+  </div>`).join('')}
  </div>
+ <p class="gsrc rv">照片來源：Google 地圖（照片下方標示拍攝者）</p>
  <div class="tips rv"><h4>💡 補充建議（查過網路資料和心得）</h4><ul>${d.tips.map(t=>`<li>${t}</li>`).join('')}</ul></div>
  <div class="cutbox rv">🪫 <span><b>累了就刪：</b>${d.drop}</span></div>
 </section>`).join('');
@@ -782,6 +818,46 @@ if('IntersectionObserver' in window){
   const ro = new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); ro.unobserve(e.target); } }),{rootMargin:'0px 0px -8% 0px', threshold:.12});
   revealEls.forEach(el=>ro.observe(el));
 } else revealEls.forEach(el=>el.classList.add('in'));
+
+/* ---------- Google place photos (lazy, one request per place) ---------- */
+const GKEY='AIzaSyC48pAciPKAyoTsli1AH14X-Pb36kN-uU8';
+let gReady=null; const gCache={};
+function loadGoogle(){
+  if(gReady) return gReady;
+  gReady=new Promise((res,rej)=>{
+    window.__gInit=()=>res(); const sc=document.createElement('script');
+    sc.src='https://maps.googleapis.com/maps/api/js?key='+GKEY+'&loading=async&libraries=places&language=zh-TW&region=JP&callback=__gInit';
+    sc.async=true; sc.onerror=rej; document.head.appendChild(sc);
+  });
+  return gReady;
+}
+async function placePhoto(q){
+  if(gCache[q]) return gCache[q];
+  gCache[q]=(async()=>{
+    await loadGoogle();
+    const {Place}=await google.maps.importLibrary('places');
+    const {places}=await Place.searchByText({textQuery:q, fields:['displayName','photos'], maxResultCount:1,
+      locationBias:{center:{lat:34.67,lng:135.50}, radius:50000}});
+    const pl=places&&places[0], ph=pl&&pl.photos&&pl.photos[0];
+    if(!ph) return null;
+    const a=(ph.authorAttributions||[])[0]||{};
+    return {url:ph.getURI({maxWidth:300,maxHeight:300}), who:a.displayName||'', whoUrl:a.uri||'', name:pl.displayName||''};
+  })().catch(()=>null);
+  return gCache[q];
+}
+const photoIO=('IntersectionObserver' in window)? new IntersectionObserver(es=>es.forEach(async e=>{
+  if(!e.isIntersecting) return; photoIO.unobserve(e.target);
+  const card=e.target, q=card.dataset.q, g=card.querySelector('.glyph'); if(!q) return;
+  g.classList.add('loading'); const r=await placePhoto(q); g.classList.remove('loading');
+  if(!r) return;
+  const img=new Image(); img.onload=()=>{ g.style.backgroundImage=`url("${r.url}")`; g.classList.add('has-photo'); };
+  img.src=r.url;
+  const at=card.querySelector('.attr');
+  if(r.who) at.innerHTML=`📷 ${r.whoUrl?`<a href="${r.whoUrl}" target="_blank" rel="noopener">${r.who}</a>`:r.who}`;
+  if(r.name) card.title='Google 地圖：'+r.name;
+}),{rootMargin:'200px 0px'}) : null;
+if(photoIO) document.querySelectorAll('.food[data-q]').forEach(c=>{ if(c.dataset.q) photoIO.observe(c); });
+document.addEventListener('click',e=>{ const c=e.target.closest('.food'); if(c && !e.target.closest('a')) c.querySelector('.flink').click(); });
 </script>
 </body>
 </html>
