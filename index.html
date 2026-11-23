@@ -249,12 +249,35 @@ body.locked{overflow:hidden}
 .ginfo .star{color:#b07a12; font-weight:700}
 .ginfo .warn{color:var(--red)}
 .ginfo b{font-weight:700}
-.wx{position:absolute; top:12px; right:12px; display:flex; align-items:center; gap:8px; flex-wrap:wrap; justify-content:flex-end; max-width:70%;
-  background:rgba(13,18,40,.55); backdrop-filter:blur(6px); color:#fff; border:1px solid rgba(255,255,255,.22); border-radius:14px; padding:6px 10px; font-size:13px}
-.wx .wi{font-size:20px; line-height:1}
+.wx{position:absolute; top:10px; right:10px; display:flex; align-items:center; gap:8px; flex-wrap:wrap; justify-content:flex-end; max-width:70%;
+  background:rgba(13,18,40,.55); backdrop-filter:blur(6px); color:#fff; border:1px solid rgba(255,255,255,.22); border-radius:12px; padding:4px 10px; font-size:13px}
+.wx .wi{font-size:17px; line-height:1}
 .wx b{font-size:16px}
 .wx em{font-style:normal; font-size:11px; color:#d9d6e6; width:100%; text-align:right; margin-top:-2px}
 .ovwx{font-size:13px; color:var(--sea); margin-top:2px}
+
+/* ---------- OVERVIEW: compact strip <-> detailed grid ---------- */
+.ovhead{display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:36px}
+.ovhead .h2{margin:0}
+.ovtoggle{display:inline-flex; align-items:center; gap:6px; border:1px solid var(--line); background:var(--card); color:var(--ink);
+  border-radius:999px; padding:7px 14px; font:inherit; font-size:14px; font-weight:700; cursor:pointer; transition:background .2s}
+.ovtoggle:hover{background:#fff6e6}
+.ovtoggle i{font-style:normal; display:inline-block; transition:transform .3s}
+.ovtoggle[aria-expanded="true"] i{transform:rotate(180deg)}
+#ovLead{margin-top:6px}
+.ov.compact{display:flex; gap:10px; overflow-x:auto; scroll-snap-type:x mandatory; scroll-padding-left:18px; margin:0 -18px; padding:2px 18px 10px; scrollbar-width:none;
+  -webkit-mask-image:linear-gradient(90deg,#000 0,#000 calc(100% - 36px),transparent); mask-image:linear-gradient(90deg,#000 0,#000 calc(100% - 36px),transparent)}
+.ov.compact::-webkit-scrollbar{display:none}
+.ov.compact .ovc{flex:0 0 150px; scroll-snap-align:start}
+.ov.compact .ovc svg,.ov.compact .ovc img{height:84px}
+.ov.compact .in{padding:8px 11px 12px}
+.ov.compact .d{font-size:12px}
+.ov.compact .t{font-size:15px; line-height:1.35; margin:2px 0 0}
+.ov.compact .row,.ov.compact .drop{display:none}
+.ov.compact .ovwx{font-size:12px}
+.ov.anim .ovc{animation:ovIn .45s cubic-bezier(.2,.7,.2,1) both; animation-delay:calc(var(--i,0) * 45ms)}
+@keyframes ovIn{from{opacity:0; transform:translateY(10px) scale(.97)}}
+@media (prefers-reduced-motion:reduce){.ov.anim .ovc{animation:none}}
 </style>
 </head>
 <body>
@@ -290,9 +313,12 @@ body.locked{overflow:hidden}
       <div><small>回程・12/18（五）</small><b>CX565</b><span>大阪 16:15 → 台北 18:30</span><em>國泰航空</em></div>
     </div>
 
-    <h2 class="h2" style="margin-top:36px">六天總覽</h2>
-    <p class="lead">點卡片可以跳到當天。黃色標籤是「累了就刪這個」。</p>
-    <div class="ov" id="ov"></div>
+    <div class="ovhead">
+      <h2 class="h2">六天總覽</h2>
+      <button class="ovtoggle" id="ovToggle" aria-expanded="false" aria-controls="ov"><span>看詳細</span><i>▾</i></button>
+    </div>
+    <p class="lead" id="ovLead">左右滑動看六天，點卡片跳到當天。</p>
+    <div class="ov compact" id="ov"></div>
   </section>
 
   <div id="days"></div>
@@ -713,7 +739,7 @@ $('#nav').innerHTML = DAYS.map((d,i)=>`<a class="chip" href="#${d.id}" data-id="
   + `<a class="chip" href="#checklist" data-id="checklist"><b>✓ 待辦</b>清單</a>`;
 
 $('#ov').innerHTML = DAYS.map((d,i)=>`
- <a class="ovc" href="#${d.id}">
+ <a class="ovc" href="#${d.id}" style="--i:${i}">
   ${pic(d,d.title) || ART[d.art].replace(/id="(g\d|glow|pond|hall)"/g,'id="$1o"').replace(/url\(#(g\d|glow|pond)\)/g,'url(#$1o)').replace(/href="#hall"/g,'href="#hallo"')}
   <div class="in"><div class="d">${CN[i]}・${d.date} 週${d.dow}</div><div class="t">${d.title}</div>
    <div class="row"><i>上午</i>${d.am}</div><div class="row"><i>下午</i>${d.pm}</div><div class="row"><i>晚上</i>${d.ev}</div>
@@ -952,12 +978,28 @@ function wxIcon(c){ if(c===0) return ['☀️','晴']; if(c<=2) return ['🌤️
       html=`<span class="wi">${ic}</span><span><b>${hi}°</b> / ${lo}°</span>${pr!=null?`<span>☔ ${pr}%</span>`:''}<em>${WX_NAME[loc]}・${txt}</em>`;
       small=`${ic} ${hi}° / ${lo}°${pr!=null?`・☔${pr}%`:''}`;
     } else {
-      html=`<span class="wi">🌡️</span><span>往年約 <b>5–12°</b></span><em>預報約出發前兩週出現</em>`;
+      html=`<span class="wi">🌡️</span><span>往年 <b>5–12°</b></span>`; 
       small='';
     }
     const head=document.querySelector(`#${d.id} .dayhead`); if(head){ const b=document.createElement('div'); b.className='wx'; b.innerHTML=html; head.appendChild(b); }
     const ov=document.querySelectorAll('.ovc')[i]; if(ov&&small){ const s2=document.createElement('div'); s2.className='ovwx'; s2.textContent=small; ov.querySelector('.in').insertBefore(s2, ov.querySelector('.t')); }
   });
+})();
+
+/* overview toggle: compact strip <-> detailed grid */
+(function(){
+  const ov=$('#ov'), bt=$('#ovToggle'), lead=$('#ovLead');
+  function set(open, animate){
+    ov.classList.toggle('compact',!open);
+    bt.setAttribute('aria-expanded',open);
+    bt.querySelector('span').textContent=open?'收起':'看詳細';
+    lead.textContent=open?'每天的上午、下午、晚上安排；黃色標籤是「累了就刪這個」。點卡片跳到當天。':'左右滑動看六天，點卡片跳到當天。';
+    if(animate){ ov.classList.remove('anim'); void ov.offsetWidth; ov.classList.add('anim'); }
+    if(!open) ov.scrollLeft=0;
+  }
+  let open=false; try{ open=localStorage.getItem('osaka-ov')==='1'; }catch(e){}
+  set(open,false);
+  bt.onclick=()=>{ open=!open; set(open,true); try{ localStorage.setItem('osaka-ov',open?'1':'0'); }catch(e){} };
 })();
 </script>
 </body>
