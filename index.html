@@ -887,8 +887,10 @@ async function placePhoto(q,size){
     const pl=places&&places[0]; if(!pl) return null; const ph=pl.photos&&pl.photos[0];
     const a=ph?((ph.authorAttributions||[])[0]||{}):{};
     return {pl, ph, who:a.displayName||'', whoUrl:a.uri||'', name:pl.displayName||''};
-  })().catch(()=>null);
-  const r=await gCache[q]; if(!r) return null;
+  })().catch(()=>'ERR');
+  let r=await gCache[q];
+  if(r==='ERR'){ delete gCache[q]; if(!placePhoto._retry) placePhoto._retry={}; if(!placePhoto._retry[q]){ placePhoto._retry[q]=1; await new Promise(x=>setTimeout(x,1500)); return placePhoto(q,size); } return null; }
+  if(!r) return null;
   return Object.assign({url:r.ph?r.ph.getURI({maxWidth:size,maxHeight:size}):null}, r);
 }
 
