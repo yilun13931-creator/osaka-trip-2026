@@ -236,6 +236,13 @@ body.locked{overflow:hidden}
 .attr{display:block; font-size:11px; color:#9a948a; margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
 .attr a{color:inherit}
 .gsrc{font-size:12px; color:var(--muted); margin:8px 2px 0}
+
+.sh-photo{position:relative; height:clamp(170px,46vw,240px); margin:0 -4px 14px; border-radius:18px; background:#eee3cf center/cover no-repeat; overflow:hidden}
+.sh-photo.loading:after{content:""; position:absolute; inset:0; background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.45) 50%,transparent 70%); animation:shimmer 1.2s infinite; transform:translateX(-100%)}
+.sh-attr{position:absolute; left:8px; bottom:8px; font-size:11px; color:#fff; background:rgba(0,0,0,.45); padding:2px 8px; border-radius:8px; max-width:90%; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.sh-attr:empty{display:none}
+.sh-attr a{color:#fff}
+.sheet .sh-close{z-index:2; background:rgba(241,234,217,.92)}
 </style>
 </head>
 <body>
@@ -738,6 +745,16 @@ $('#check').addEventListener('change', e=>{
 });
 
 
+
+/* photo queries for the detail sheet (sights and restaurants only) */
+const PQ={
+ 'day1-0':'関西国際空港 第1ターミナル','day1-3':'とんぼりリバークルーズ 道頓堀',
+ 'day2-1':'木津市場 大阪市浪速区敷津東2-2-8','day2-2':'大阪城天守閣','day2-4':'梅田スカイビル 空中庭園展望台','day2-6':'アメリカ村 三角公園 大阪','day2-7':'焼肉力丸 難波道頓堀店 道頓堀1-9-1',
+ 'day3-3':'南京町 神戸','day3-5':'神戸ポートタワー',
+ 'day4-1':'京都駅ビル 大階段','day4-2':'京都拉麺小路','day4-4':'渡月橋 嵐山','day4-6':'大阪市中央公会堂','day4-7':'中之島イルミネーションストリート',
+ 'day5-1':'ユニバーサル・スタジオ・ジャパン','day5-4':'ユニバーサル・スタジオ・ジャパン ニューヨーク・エリア',
+ 'day6-3':'りんくうプレミアム・アウトレット','day6-5':'関西国際空港 第1ターミナル'
+};
 /* ---------- detail sheet ---------- */
 const sheet=$('#sheet'), scrim=$('#scrim'); let cur=null, lastFocus=null;
 const navUrl=(q,m)=>'https://www.google.com/maps/dir/?api=1&destination='+encodeURIComponent(q)+'&travelmode='+(m||'driving');
@@ -750,13 +767,21 @@ function openSheet(di,k){
   if(x.alt) rows.push(`<div class="sh-row alt"><b>🪫 累了</b><span>${x.alt}</span></div>`);
   const btns=[]; if(x.dest) btns.push(`<a class="btn-nav" href="${navUrl(x.dest,x.mode)}" target="_blank" rel="noopener">${x.mode==='walking'?'🚶 走路導航':'🚗 開始導航'}</a>`);
   if(x.map) btns.push(`<a class="btn-map" href="${x.map}" target="_blank" rel="noopener">📍 看地圖和照片</a>`);
-  $('#shContent').innerHTML=`
+  const pqk=PQ[`${d.id}-${k}`];
+  $('#shContent').innerHTML=(pqk?`<div class="sh-photo loading" id="shPhoto"><span class="sh-attr" id="shAttr"></span></div>`:'')+`
    <div class="sh-top"><div class="sh-ic">${x.i}</div><div><div class="sh-when">${CN[di]}・${d.date} 週${d.dow}・${x.t}</div><h3 class="sh-title" id="shTitle">${x.b}</h3></div></div>
    <div class="sh-body">${x.d||x.p||''}${x.d&&x.p?`<p style="color:var(--muted);margin:10px 0 0">${x.p}</p>`:''}${x.tags?`<div class="meta">${tagHtml(x.tags)}</div>`:''}</div>
    ${rows.length?`<div class="sh-rows">${rows.join('')}</div>`:''}
    ${btns.length?`<div class="sh-btns">${btns.join('')}</div>`:''}
    <div class="sh-nav"><button id="shPrev" ${k===0?'disabled':''}>‹ 上一個</button><button id="shNext" ${k===d.tl.length-1?'disabled':''}>下一個 ›</button></div>`;
   $('#shPrev').onclick=()=>openSheet(di,k-1); $('#shNext').onclick=()=>openSheet(di,k+1);
+  if(pqk){ const want=`${di}-${k}`; placePhoto(pqk,800).then(r=>{
+    const box=$('#shPhoto'); if(!box || !cur || `${cur[0]}-${cur[1]}`!==want) return;
+    if(!r){ box.remove(); return; }
+    const img=new Image(); img.onload=()=>{ box.style.backgroundImage=`url("${r.url}")`; box.classList.remove('loading'); };
+    img.onerror=()=>box.remove(); img.src=r.url;
+    if(r.who) $('#shAttr').innerHTML=`📷 ${r.whoUrl?`<a href="${r.whoUrl}" target="_blank" rel="noopener">${r.who}</a>`:r.who}・Google 地圖`;
+  }); }
   if(!sheet.classList.contains('open')){ lastFocus=document.activeElement; }
   sheet.scrollTop=0; sheet.classList.add('open'); scrim.classList.add('open'); document.body.classList.add('locked');
   $('#shClose').focus({preventScroll:true});
@@ -831,9 +856,9 @@ function loadGoogle(){
   });
   return gReady;
 }
-async function placePhoto(q){
-  if(gCache[q]) return gCache[q];
-  gCache[q]=(async()=>{
+async function placePhoto(q,size){
+  size=size||300;
+  if(!gCache[q]) gCache[q]=(async()=>{
     await loadGoogle();
     const {Place}=await google.maps.importLibrary('places');
     const {places}=await Place.searchByText({textQuery:q, fields:['displayName','photos'], maxResultCount:1,
@@ -841,9 +866,10 @@ async function placePhoto(q){
     const pl=places&&places[0], ph=pl&&pl.photos&&pl.photos[0];
     if(!ph) return null;
     const a=(ph.authorAttributions||[])[0]||{};
-    return {url:ph.getURI({maxWidth:300,maxHeight:300}), who:a.displayName||'', whoUrl:a.uri||'', name:pl.displayName||''};
+    return {ph, who:a.displayName||'', whoUrl:a.uri||'', name:pl.displayName||''};
   })().catch(()=>null);
-  return gCache[q];
+  const r=await gCache[q]; if(!r) return null;
+  return Object.assign({url:r.ph.getURI({maxWidth:size,maxHeight:size})}, r);
 }
 const photoIO=('IntersectionObserver' in window)? new IntersectionObserver(es=>es.forEach(async e=>{
   if(!e.isIntersecting) return; photoIO.unobserve(e.target);
