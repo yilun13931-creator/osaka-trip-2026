@@ -738,7 +738,7 @@ $('#days').innerHTML = DAYS.map((d,i)=>`
  <div class="foods">${d.food.map((f,k)=>`
   <div class="food rv" style="--i:${Math.min(k,4)}" data-q="${FQ[f.link]||''}">
    <div class="glyph" style="background:${f.c}"><span>${f.g}</span></div>
-   <div class="ftx"><b>${f.n}</b>${f.s?`<span>${f.s}</span>`:''}${f.h?`<span>🕒 ${f.h}</span>`:''}<div class="ginfo"></div><a class="flink" href="${f.link}" target="_blank" rel="noopener">開啟地圖看更多 →</a><small class="attr"></small></div>
+   <div class="ftx"><b>${f.n}</b>${f.s?`<span>${f.s}</span>`:''}${f.h?`<span class="fh">🕒 ${f.h}</span>`:''}<div class="ginfo"></div><a class="flink" href="${f.link}" target="_blank" rel="noopener">開啟地圖看更多 →</a><small class="attr"></small></div>
   </div>`).join('')}
  </div>
  <p class="gsrc rv">照片來源：Google 地圖（照片下方標示拍攝者）</p>
@@ -922,6 +922,7 @@ const photoIO=('IntersectionObserver' in window)? new IntersectionObserver(es=>e
   if(r.url){ const img=new Image(); img.onload=()=>{ g.style.backgroundImage=`url("${r.url}")`; g.classList.add('has-photo'); }; img.src=r.url; }
   const dStr=card.closest('.day').dataset.date, info=placeInfo(r.pl,dStr), gi=card.querySelector('.ginfo');
   const live=await liveStatus(r.pl,dStr);
+  if(info.hours){ const fh=card.querySelector('.fh'); if(fh) fh.remove(); }
   gi.innerHTML=[info.status&&`<b class="warn">${info.status}</b>`, live&&`<b>${live}</b>`, info.rating&&`<span class="star">${info.rating}</span>`, info.hours&&`<span>🕒 ${info.hours}</span>`].filter(Boolean).join('');
   const at=card.querySelector('.attr');
   if(r.who) at.innerHTML=`📷 ${r.whoUrl?`<a href="${r.whoUrl}" target="_blank" rel="noopener">${r.who}</a>`:r.who}`;
